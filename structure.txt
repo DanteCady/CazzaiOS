@@ -1,0 +1,102 @@
+/CazzaiOS
+|-- /assets
+|   |-- /images
+|   |-- /fonts
+|
+|-- /src
+|   |-- /components
+|   |   |-- /atoms
+|   |   |-- /molecules
+|   |   |-- /organisms
+|   |   |-- /templates
+|   |
+|   |-- /screens
+|   |   |-- /Auth
+|   |   |   |-- Login.js
+|   |   |   |-- Signup.js
+|   |   |
+|   |   |-- /Properties
+|   |   |   |-- PropertyList.js
+|   |   |   |-- AddProperty.js
+|   |   |   |-- EditProperty.js
+|   |   |   |-- ViewProperty.js
+|   |   |
+|   |   |-- /Tenants
+|   |   |   |-- TenantList.js
+|   |   |   |-- AddTenant.js
+|   |   |   |-- EditTenant.js
+|   |   |   |-- ViewTenant.js
+|   |   |
+|   |   |-- /Payments
+|   |       |-- PaymentList.js
+|   |       |-- AddPayment.js
+|   |
+|   |-- /navigation
+|   |   |-- RootNavigator.js
+|   |
+|   |-- /services
+|   |   |-- api.js
+|   |   |-- firebase.js
+|   |
+|   |-- /store
+|   |   |-- /actions
+|   |   |-- /reducers
+|   |   |-- /middlewares
+|   |   |-- store.js
+|   |
+|   |-- /utils
+|       |-- helpers.js
+|       |-- constants.js
+|
+|-- App.js
+|-- app.json
+
+
+
+=============OVERVIEW=============
+==================================
+
+
+/CazzaiOS:
+
+The root directory of the application. It's typically the name of the application or project.
+/assets:
+
+A general folder to store static assets.
+
+/images: Contains graphical assets like icons, logos, illustrations, and other images.
+
+/fonts: Contains custom font files that may be used in the application.
+
+/src:
+
+Contains the source code of the application.
+
+/components: Contains reusable UI components.
+
+/atoms: Basic UI elements like buttons, inputs, and labels.
+/molecules: Slightly complex components made up of multiple atoms, like form groups or cards.
+/organisms: More complex UI structures, like headers or footers, that consist of molecules and/or atoms.
+/templates: Page layouts or structures into which you can plug organisms, molecules, and atoms.
+/screens: Represents different screens or pages in the app.
+
+/Auth: Contains authentication-related screens.
+/Properties: Screens related to property management.
+/Tenants: Screens related to tenant management.
+/Payments: Screens related to payment operations.
+/navigation: Contains navigational logic and configurations.
+
+/services: Houses services like APIs or database connections.
+
+api.js: Might contain functions or configurations related to API calls.
+firebase.js: Might contain configurations and functions related to Firebase services.
+/store: Contains logic and structures for state management, possibly using libraries like Redux.
+
+/actions: Redux actions or commands that represent the operations that can be taken.
+/reducers: Redux reducers that specify how the app's state changes in response to actions.
+/middlewares: Middlewares to enhance or compose Redux dispatch function.
+store.js: Main Redux store configuration.
+/utils: Utility functions and constant values that might be used throughout the app.
+
+helpers.js: Common helper functions.
+constants.js: Constant values or configurations.
