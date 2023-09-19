@@ -1,10 +1,13 @@
 import React from 'react';
+import { PaperProvider } from 'react-native-paper';
 import RootNavigator from './src/navigation/rootNavigator';
 import theme from './src/theme';
 
 const App = () => {
   return (
-    <RootNavigator />
+    <PaperProvider theme={theme}>
+      <RootNavigator />
+    </PaperProvider>
   );
 }
 

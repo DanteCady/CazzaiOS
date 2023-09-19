@@ -74,9 +74,9 @@ Contains the source code of the application.
 
 /components: Contains reusable UI components.
 
-/atoms: Basic UI elements like buttons, inputs, and labels.
-/molecules: Slightly complex components made up of multiple atoms, like form groups or cards.
-/organisms: More complex UI structures, like headers or footers, that consist of molecules and/or atoms.
+/base: Basic UI elements like buttons, inputs, and labels.
+/composit: Slightly complex components made up of multiple atoms, like form groups or cards.
+/modules: More complex UI structures, like headers or footers, that consist of molecules and/or atoms.
 /templates: Page layouts or structures into which you can plug organisms, molecules, and atoms.
 /screens: Represents different screens or pages in the app.
 

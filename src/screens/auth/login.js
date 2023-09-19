@@ -1,121 +1,177 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Input, Button, Icon } from 'react-native-elements';
-import theme from '../../theme';
+import { SafeAreaView, StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
+import { Button, TextInput, Title } from 'react-native-paper';
+// import { LinearGradient } from 'expo-linear-gradient';
 
-const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+const LoginScreen = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State for showing or hiding password
 
+  const handleLogin = () => {
+    // Handle login logic here
+  };
+
+  const handleSignUp = () => {
+    // Handle sign up logic or navigation here
+  };
+
+  const handleBiometric = () => {
+    // Handle biometric authentication here
+  };
+
+ 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back!</Text>
+    <SafeAreaView style={styles.container}>
+        <View style={styles.loginContainer}>
+            <Image source={require('../../assets/apple-touch-icon.png')} style={styles.logo} />
+            <Text style={styles.title}>Welcome</Text>
+            <TextInput
+              label="Email"
+              value={email}
+              onChangeText={setEmail}
+              mode="outlined"
+              style={styles.input}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TextInput
+              label="Password"
+              value={password}
+              onChangeText={setPassword}
+              mode="outlined"
+              style={styles.input}
+              secureTextEntry={!showPassword} // Controlled by showPassword state
+            />
 
-      <Input 
-        placeholder='Username' 
-        leftIcon={{ type: 'font-awesome', name: 'user', color: theme.colors.gray }}
-        containerStyle={styles.inputContainer}
-        inputStyle={styles.inputText}
-        onChangeText={text => setUsername(text)} 
-      />
-      <Input 
-        placeholder='Password' 
-        leftIcon={{ type: 'font-awesome', name: 'lock', color: theme.colors.gray }} 
-        containerStyle={styles.inputContainer}
-        inputStyle={styles.inputText}
-        secureTextEntry 
-        onChangeText={text => setPassword(text)} 
-      />
-      
-      <Button 
-        title="Login" 
-        buttonStyle={styles.loginButton}
-        onPress={() => {/* Firebase login code here */}} 
-      />
+            <View style={styles.forgotPasswordContainer}>
+              <CheckBox value={showPassword} onValueChange={setShowPassword} />
+              <Text>Show Password</Text>
+              <TouchableOpacity>
+                <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
+              </TouchableOpacity>
+            </View>
 
-      <View style={styles.socialLogin}>
-        <Button 
-          icon={<Icon name="google" type="font-awesome" color={theme.colors.white} />} 
-          buttonStyle={styles.googleButton}
-          onPress={() => {/* Firebase Google sign-in code here */}} 
-        />
-        <Button 
-          icon={<Icon name="windows" type="font-awesome" color={theme.colors.white} />} 
-          buttonStyle={styles.microsoftButton}
-          onPress={() => {/* Firebase Microsoft sign-in code here */}} 
-        />
-      </View>
+            <Button mode="contained" onPress={handleLogin} style={styles.loginButton} labelStyle={styles.buttonText}>
+                Login
+            </Button>
 
-      <TouchableOpacity 
-        onPress={() => {/* Biometric sign-in code here */}} 
-        style={styles.biometricTouch}
-      >
-        <Icon name="face" type="material" color={theme.colors.primary.main} size={30} />
-      </TouchableOpacity>
+            <View style={styles.footerContainer}>
+                <TouchableOpacity style={styles.signUpContainer} onPress={handleSignUp}>
+                  <Text style={styles.signUpText}>Don't have an account? </Text>
+                  <Text style={styles.signUpLink}>Sign up</Text>
+                </TouchableOpacity>
 
-      <Text style={styles.signupText}>Don't have an account?</Text>
-      <Button 
-        title="Sign Up" 
-        type="clear" 
-        titleStyle={styles.signupButtonText}
-        onPress={() => navigation.navigate('SignUpScreen')} 
-      />
-    </View>
+                <Text style={styles.version}>Version 1.0.0</Text>
+                <TouchableOpacity>
+                  <Text style={styles.termsLink}>Terms of Service</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text style={styles.termsLink}>Terms of Use</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F5F5F5', // A neutral background color
+  },
+  loginContainer: {
+    marginHorizontal: 20,
     justifyContent: 'center',
-    paddingHorizontal: theme.spacing.medium,
-    backgroundColor: theme.colors.background,
+    flex: 1,
+  },
+  logo: {
+    height: 60,
+    width: 60,
+    alignSelf: 'center',
+    marginBottom: 30,
   },
   title: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 32,
     textAlign: 'center',
-    marginBottom: theme.spacing.large,
+    marginBottom: 5,
+    fontWeight: 'bold',
   },
-  inputContainer: {
-    marginBottom: theme.spacing.medium,
+  subtitle: {
+    fontSize: 24,
+    textAlign: 'center',
+    marginBottom: 30,
+    color: '#666',
   },
-  inputText: {
-    fontSize: 16,
+  input: {
+    borderBottomWidth: 1,  // Gives a subtle underline
+    borderBottomColor: '#DDD',
+    paddingHorizontal: 5,
+    marginBottom: 20,
+    fontSize: 18,
+    paddingVertical: 10,
+  },
+  buttonContainer: {
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   loginButton: {
-    backgroundColor: theme.colors.primary.main,
-    paddingVertical: theme.spacing.medium,
-    marginBottom: theme.spacing.medium,
+    borderRadius: 30,
+    backgroundColor: '#0c51a1',
+    width: 200,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  socialLogin: {
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  signUpContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 30,
+  },
+  signUpText: {
+    fontSize: 16,
+    color: '#555',
+  },
+  signUpLink: {
+    fontSize: 16,
+    color: '#1976D2',
+    textDecorationLine: 'underline',
+  },
+  forgotPasswordContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: theme.spacing.medium,
-  },
-  googleButton: {
-    backgroundColor: '#DB4437',
-    flex: 1,
-    marginRight: theme.spacing.small,
-  },
-  microsoftButton: {
-    backgroundColor: '#00A4EF',
-    flex: 1,
-    marginLeft: theme.spacing.small,
-  },
-  biometricTouch: {
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: theme.spacing.medium,
+    marginBottom: 20,
   },
-  signupText: {
-    textAlign: 'center',
-    marginBottom: theme.spacing.small,
+
+  forgotPasswordLink: {
+    color: '#1976D2',
   },
-  signupButtonText: {
-    color: theme.colors.primary.main,
-    fontSize: 16,
-  }
+
+  footerContainer: {
+    marginTop: 30,
+    alignItems: 'center',
+  },
+
+  version: {
+    marginTop: 10,
+    fontSize: 12,
+    color: '#555',
+  },
+
+  termsLink: {
+    marginTop: 5,
+    fontSize: 12,
+    color: '#1976D2',
+    textDecorationLine: 'underline',
+  },
 });
 
 export default LoginScreen;
