@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, ScrollView, View, TouchableOpacity } from "react-native";
-import { Card, Title, Paragraph, Text, List } from "react-native-paper";
-import { NavigationContainer } from "@react-navigation/native";
+import { Card, Title, Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import NavigationBar from "../../../components/composite/Dashboard/landlord/navigationBar";
+import { Calendar } from 'react-native-calendars';
+import Swiper from "react-native-swiper";
 
 const LandlordDashboard = ({ navigation }) => {
-  // Sample data for the in
   const tenants = [
     { name: "John Doe", rent: 500 },
     { name: "Jane Smith", rent: 550 },
@@ -35,7 +35,6 @@ const LandlordDashboard = ({ navigation }) => {
 
   const userName = "Cazza User"; // replace with dynamic data, maybe from a state or prop
 
-  // Calculate total rent expected
   const totalRentExpected = tenants.reduce(
     (sum, tenant) => sum + tenant.rent,
     0
@@ -43,23 +42,53 @@ const LandlordDashboard = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        colors={["#43ecf5", "white"]}
+        style={styles.gradientContainer}
+      >
+        <Text style={styles.welcomeText}>Welcome Back, {userName}!</Text>
+      </LinearGradient>
       <ScrollView>
-        <LinearGradient
-          colors={["#43ecf5", "white"]}
-          style={styles.gradientContainer}
-        >
-          <Text style={styles.welcomeText}>Welcome Back, {userName}!</Text>
-        </LinearGradient>
-        <View style={styles.content}>
-          <View style={styles.incomeCard} elevation={0}>
+        {/* Financial Summary Swiper */}
+       <Swiper style={styles.swiper}>
+          {/* Page 1 - Total Expected Rent */}
+          <View style={styles.summaryPage}>
             <Card.Content>
-              <Title style={styles.incomeTitle}>Total Rent Expected</Title>
+              <Title style={styles.incomeTitle}>Total Expected Rent</Title>
               <Text style={styles.incomeAmount}>
                 ${totalRentExpected.toFixed(2)}
               </Text>
             </Card.Content>
           </View>
-        </View>
+          {/* Page 2 - Metric 2 */}
+          <View style={styles.summaryPage}>
+            <Card.Content>
+              <Title style={styles.incomeTitle}>Total Rent Recieved</Title>
+              {/* Add content for Metric 2 */}
+            </Card.Content>
+          </View>
+          {/* Page 3 - Metric 3 */}
+          <View style={styles.summaryPage}>
+            <Card.Content>
+              <Title style={styles.incomeTitle}>Vacancy Rate</Title>
+              {/* Add content for Metric 3 */}
+            </Card.Content>
+          </View>
+          {/* Page 4 - Metric 6 */}
+          <View style={styles.summaryPage}>
+            <Card.Content>
+              <Title style={styles.incomeTitle}>Rent Arrears</Title>
+              {/* Add content for Metric 6 */}
+            </Card.Content>
+          </View>
+          {/* Page 5 - Metric 10 */}
+          <View style={styles.summaryPage}>
+            <Card.Content>
+              <Title style={styles.incomeTitle}>Projected Income</Title>
+              {/* Add content for Metric 10 */}
+            </Card.Content>
+          </View>
+        </Swiper>
 
         <View style={styles.content}>
           <Text style={styles.boxName}>Tenants</Text>
@@ -103,6 +132,14 @@ const LandlordDashboard = ({ navigation }) => {
             <Text style={styles.viewAll}>View All</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Calendar */}
+        <View style={styles.content}>
+          <Text style={styles.boxName}>Calendar</Text>
+          <Calendar
+            // Customize calendar appearance and behavior here
+          />
+        </View>
       </ScrollView>
       <NavigationBar />
     </View>
@@ -116,19 +153,17 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 15,
-    flex: 1, // Ensure content takes full height
+    flex: 1,
   },
   gradientContainer: {
-    flex: 1, // This ensures that the gradient takes up the full screen height
+    height: 200,
   },
   incomeCard: {
-    width: "100%", // Ensure the card fills the entire width
     marginBottom: 20,
-    shadowOpacity: 0, // removes shadow for iOS
+    shadowOpacity: 0,
     borderRadius: 10,
     backgroundColor: "#FFF",
-    height: 200,
-    marginTop: -150,
+    padding: 15,
   },
   incomeTitle: {
     fontSize: 18,
@@ -140,91 +175,49 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#0c51a1",
   },
-  incomeDesc: {
-    fontSize: 16,
-    color: "black",
+  summaryPage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  swiper: {
+    height: 250, // Adjust the height as needed
   },
   tenantBox: {
-    width: "100%",
     marginTop: -10,
     marginBottom: 20,
     borderRadius: 10,
     backgroundColor: "white",
     padding: 15,
-    color: "black",
   },
   boxName: {
     color: "black",
     marginBottom: 30,
   },
   tenantRow: {
-    flexDirection: "row", // make child elements sit side by side
-    justifyContent: "space-between", // distribute children across the row
-    alignItems: "center", // align children vertically in the center
-    borderBottomWidth: 0.5, // add a thin line at the bottom to mimic a table row
-    borderBottomColor: "#E0E0E0", // color for the bottom line
-    paddingVertical: 10, // add some vertical padding for better look
-    color: "black",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#E0E0E0",
+    paddingVertical: 10,
   },
-
   tenantName: {
     fontSize: 18,
     color: "black",
   },
-
   tenantRent: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#0c51a1",
   },
-  cardTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "black",
-  },
-
-  tenantRent: {
-    fontSize: 16,
-    color: "#333",
-  },
-  accordion: {
-    paddingHorizontal: 10,
-  },
-  gradientContainer: {
-    height: 380,
-    width: "100%",
-  },
-  welcomeText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#FFF", // white color for better visibility against gradient
-    textAlign: "center",
-    marginTop: 150, // adjust this value as needed to position the text
-  },
-  upcomingPaymentsContainer: {
-    width: "100%",
-    marginTop: -10,
-    marginBottom: 20,
-    borderRadius: 10,
-    backgroundColor: "white",
-    padding: 15,
-    color: "black",
-  },
-
-  upcomingPaymentsTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "black",
-  },
-
   paymentTile: {
-    width: 120, // Reduced from 140
-    height: 120, // Reduced from 100
+    width: 120,
+    height: 120,
     backgroundColor: "white",
-    borderRadius: 8, // Slightly reduced from 10 for a more subtle curve
-    marginRight: 12, // Reduced from 15
-    padding: 8, // Reduced from 10
+    borderRadius: 8,
+    marginRight: 12,
+    padding: 8,
     justifyContent: "space-between",
     alignItems: "center",
     shadowColor: "#000",
@@ -232,20 +225,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
   },
-
   paymentTenant: {
-    fontSize: 14, // Reduced from 16
+    fontSize: 14,
     fontWeight: "bold",
     color: "black",
   },
-
   paymentAmount: {
-    fontSize: 16, // Reduced from 18
+    fontSize: 16,
     color: "#0c51a1",
   },
-
   paymentDueDate: {
-    fontSize: 12, // Reduced from 14
+    fontSize: 12,
     color: "#333",
   },
   daysRemaining: {
@@ -258,6 +248,28 @@ const styles = StyleSheet.create({
     textAlign: "right",
     marginTop: 5,
     textDecorationLine: "underline",
+  },
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#FFF",
+    textAlign: "center",
+    marginTop: 100
+  },
+  upcomingPaymentsContainer: {
+    marginTop: -10,
+    marginBottom: 20,
+    borderRadius: 10,
+    // backgroundColor: "white",
+    padding: 15,
+    height: 170
+    
+  },
+  upcomingPaymentsTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "black",
   },
 });
 
