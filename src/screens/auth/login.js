@@ -1,77 +1,102 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
-import { Button, TextInput, Title } from 'react-native-paper';
-// import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  Image,
+} from "react-native";
+// import CheckBox from '@react-native-community/checkbox';
+import { Button, TextInput, Title } from "react-native-paper";
+import { LinearGradient } from "expo-linear-gradient";
+import { NavigationContainer } from "@react-navigation/native";
+import theme from "../../theme";
 
-const LoginScreen = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const LoginScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for showing or hiding password
 
   const handleLogin = () => {
     // Handle login logic here
   };
 
-  const handleSignUp = () => {
-    // Handle sign up logic or navigation here
+  const goToSignup = () => {
+    navigation.navigate("Signup");
   };
 
   const handleBiometric = () => {
     // Handle biometric authentication here
   };
 
- 
   return (
     <SafeAreaView style={styles.container}>
-        <View style={styles.loginContainer}>
-            <Image source={require('../../assets/apple-touch-icon.png')} style={styles.logo} />
-            <Text style={styles.title}>Welcome</Text>
-            <TextInput
-              label="Email"
-              value={email}
-              onChangeText={setEmail}
-              mode="outlined"
-              style={styles.input}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-            <TextInput
-              label="Password"
-              value={password}
-              onChangeText={setPassword}
-              mode="outlined"
-              style={styles.input}
-              secureTextEntry={!showPassword} // Controlled by showPassword state
-            />
+      <View style={styles.loginContainer}>
+        <Image
+          source={require("../../assets/apple-touch-icon.png")}
+          style={styles.logo}
+        />
+        <Text style={styles.title}>Welcome to Cazza!</Text>
+        <TextInput
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          mode="outlined"
+          style={styles.input}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          label="Password"
+          value={password}
+          onChangeText={setPassword}
+          mode="outlined"
+          style={styles.input}
+          secureTextEntry={!showPassword} // Controlled by showPassword state
+        />
 
-            <View style={styles.forgotPasswordContainer}>
-              <CheckBox value={showPassword} onValueChange={setShowPassword} />
-              <Text>Show Password</Text>
-              <TouchableOpacity>
-                <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
-              </TouchableOpacity>
-            </View>
-
-            <Button mode="contained" onPress={handleLogin} style={styles.loginButton} labelStyle={styles.buttonText}>
-                Login
-            </Button>
-
-            <View style={styles.footerContainer}>
-                <TouchableOpacity style={styles.signUpContainer} onPress={handleSignUp}>
-                  <Text style={styles.signUpText}>Don't have an account? </Text>
-                  <Text style={styles.signUpLink}>Sign up</Text>
-                </TouchableOpacity>
-
-                <Text style={styles.version}>Version 1.0.0</Text>
-                <TouchableOpacity>
-                  <Text style={styles.termsLink}>Terms of Service</Text>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Text style={styles.termsLink}>Terms of Use</Text>
-                </TouchableOpacity>
-            </View>
+        <View style={styles.forgotPasswordContainer}>
+          {/* <CheckBox value={showPassword} onValueChange={setShowPassword} /> */}
+          {/* <Text>Show Password</Text> */}
+          <TouchableOpacity>
+            <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
+          </TouchableOpacity>
         </View>
+
+        <View style={styles.buttonContainer}>
+          <Button
+            mode="contained"
+            onPress={handleLogin}
+            style={styles.loginButton}
+            labelStyle={styles.buttonText}
+          >
+            Login
+          </Button>
+          <TouchableOpacity>
+            <Image
+              source={require("../../assets/Face_ID_logo.svg.png")}
+              style={styles.faceID}
+              onProgress={handleBiometric}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.footerContainer}>
+          <TouchableOpacity style={styles.signUpContainer} onPress={goToSignup}>
+            <Text style={styles.signUpText}>Don't have an account? </Text>
+            <Text style={styles.signUpLink}>Sign up</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.version}>Version 1.0.0</Text>
+          <TouchableOpacity>
+            <Text style={styles.termsLink}>Terms of Service</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.termsLink}>Terms of Use</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -79,99 +104,101 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5', // A neutral background color
+    backgroundColor: theme.colors.grey.light,
+    justifyContent: "center",
   },
   loginContainer: {
     marginHorizontal: 20,
-    justifyContent: 'center',
-    flex: 1,
   },
   logo: {
-    height: 60,
-    width: 60,
-    alignSelf: 'center',
+    height: 100,
+    width: 100,
+    alignSelf: "center",
     marginBottom: 30,
   },
   title: {
-    fontSize: 32,
-    textAlign: 'center',
+    fontSize: theme.typography.header.fontSize,
+    textAlign: "center",
     marginBottom: 5,
-    fontWeight: 'bold',
+    fontWeight: theme.typography.header.fontWeight,
+    color: theme.typography.header.color,
   },
   subtitle: {
-    fontSize: 24,
-    textAlign: 'center',
+    fontSize: theme.typography.subHeader.fontSize,
+    textAlign: "center",
     marginBottom: 30,
-    color: '#666',
+    color: theme.colors.grey.main,
   },
   input: {
-    borderBottomWidth: 1,  // Gives a subtle underline
-    borderBottomColor: '#DDD',
-    paddingHorizontal: 5,
-    marginBottom: 20,
-    fontSize: 18,
-    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.grey.main,
+    paddingHorizontal: theme.spacing.small,
+    marginBottom: theme.spacing.medium,
+    fontSize: theme.typography.body.fontSize,
+    paddingVertical: theme.spacing.small,
+    height: 35,
   },
   buttonContainer: {
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: theme.spacing.medium,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  faceID: {
+    height: 45,
+    width: 45,
+    marginLeft: theme.spacing.medium,
   },
   loginButton: {
-    borderRadius: 30,
-    backgroundColor: '#0c51a1',
+    borderRadius: theme.borderRadius.medium,
+    backgroundColor: theme.colors.primary.dark,
     width: 200,
     height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: theme.colors.white,
+    fontSize: theme.typography.body.fontSize,
+    fontWeight: theme.typography.body.fontWeight,
   },
   signUpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 30,
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: theme.spacing.large,
   },
   signUpText: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: theme.typography.body.fontSize,
+    color: theme.colors.grey.dark,
   },
   signUpLink: {
-    fontSize: 16,
-    color: '#1976D2',
-    textDecorationLine: 'underline',
+    fontSize: theme.typography.body.fontSize,
+    color: theme.colors.primary.main,
+    textDecorationLine: "underline",
   },
   forgotPasswordContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: theme.spacing.medium,
   },
-
   forgotPasswordLink: {
-    color: '#1976D2',
+    color: theme.colors.primary.main,
   },
-
   footerContainer: {
-    marginTop: 30,
-    alignItems: 'center',
+    marginTop: theme.spacing.large,
+    alignItems: "center",
   },
-
   version: {
-    marginTop: 10,
-    fontSize: 12,
-    color: '#555',
+    marginTop: theme.spacing.small,
+    fontSize: theme.typography.caption.fontSize,
+    color: theme.colors.grey.dark,
   },
-
   termsLink: {
-    marginTop: 5,
-    fontSize: 12,
-    color: '#1976D2',
-    textDecorationLine: 'underline',
+    marginTop: theme.spacing.xsmall,
+    fontSize: theme.typography.caption.fontSize,
+    color: theme.colors.primary.main,
+    textDecorationLine: "underline",
   },
 });
-
 export default LoginScreen;

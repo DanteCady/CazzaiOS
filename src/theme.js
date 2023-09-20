@@ -2,26 +2,26 @@ const theme = {
   // Colors
   colors: {
     primary: {
-      light: '#6ec6ff',
-      main: '#2196f3',
-      dark: '#0069c0',
+      light: '#7df2fa',  // Light shade of primary
+      main: '#43ecf5',  // Primary color
+      dark: '#0ca1d8',  // Darker shade of primary
     },
     secondary: {
-      light: '#ff9a8d',
-      main: '#ff6b6b',
-      dark: '#c73840',
+      light: '#f59495',  // Light shade of the accent color
+      main: '#f56867',  // Accent color
+      dark: '#c43e45',  // Darker shade of the accent color
     },
     tertiary: {
-      light: '#a7ff83',
-      main: '#76ff03',
-      dark: '#32cb00',
+      light: '#b3f6fa',
+      main: '#80f3f9',
+      dark: '#00c0c6',
     },
     white: '#FFFFFF',
     black: '#000000',
     grey: {
-      light: '#F7F7F7',
-      main: '#9E9E9E',
-      dark: '#424242',
+      light: '#F5F5F5',
+      main: '#666666',
+      dark: '#333333',
     },
     error: '#D32F2F',
     warning: '#FBC02D',
