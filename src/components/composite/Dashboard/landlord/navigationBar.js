@@ -4,10 +4,10 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../../theme";
 import QuickAddButtons from "./quickAddButtons";
 
-const NavigationBar = ({ onOpenDrawer, navigation, toggleQuickAdd }) => {
+const NavigationBar = ({ navigation, toggleQuickAdd }) => {
   const [showQuickAddButtons, setShowQuickAddButtons] = useState(false);
 
-  const toggleQuickAddButtons = () => {
+  const toggleQuickAddButtonsLocal = () => {
     setShowQuickAddButtons(!showQuickAddButtons);
     toggleQuickAdd(); // Call the prop function to toggle Quick Add
   };
@@ -16,26 +16,16 @@ const NavigationBar = ({ onOpenDrawer, navigation, toggleQuickAdd }) => {
     navigation.navigate("LandlordDashboard");
   };
 
-  const goToQuickAdd = () => {
-    toggleQuickAddButtons();
-  };
-
   const goToNotifications = () => {
     navigation.navigate("Notifications");
   };
 
-  const goToProfile = () => {
+  const goToMessages = () => {
     navigation.navigate("Profile");
   };
 
-  const addProperty = () => {
-    // Handle adding a property
-    toggleQuickAddButtons();
-  };
-
-  const addTenant = () => {
-    // Handle adding a tenant
-    toggleQuickAddButtons();
+  const goToReports = () => { // Add this function
+    navigation.navigate("Reports");
   };
 
   return (
@@ -49,11 +39,10 @@ const NavigationBar = ({ onOpenDrawer, navigation, toggleQuickAdd }) => {
           />
           <Text style={styles.iconTitle}>Dashboard</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onOpenDrawer} style={styles.button}>
-          <Icon name="menu" size={30} color={theme.colors.primary.dark} />
-          <Text style={styles.iconTitle}>Menu</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={goToQuickAdd} style={styles.button}>
+        <TouchableOpacity
+          onPress={toggleQuickAddButtonsLocal}
+          style={styles.button}
+        >
           <Icon
             name="plus-circle"
             size={30}
@@ -65,15 +54,16 @@ const NavigationBar = ({ onOpenDrawer, navigation, toggleQuickAdd }) => {
           <Icon name="bell" size={30} color={theme.colors.primary.dark} />
           <Text style={styles.iconTitle}>Notifications</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={goToProfile} style={styles.button}>
-          <Icon
-            name="account-circle"
-            size={30}
-            color={theme.colors.primary.dark}
-          />
-          <Text style={styles.iconTitle}>Profile</Text>
+        <TouchableOpacity onPress={goToReports} style={styles.button}>
+          <Icon name="folder" size={30} color={theme.colors.primary.dark} />
+          <Text style={styles.iconTitle}>Files</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={goToMessages} style={styles.button}>
+          <Icon name="message" size={30} color={theme.colors.primary.dark} />
+          <Text style={styles.iconTitle}>Messages</Text>
         </TouchableOpacity>
       </View>
+      {showQuickAddButtons && <QuickAddButtons />}
     </View>
   );
 };
@@ -97,7 +87,8 @@ const styles = StyleSheet.create({
   iconTitle: {
     fontSize: 12,
     marginTop: 5,
-    color: theme.colors.primary.dark,
+    color: "#0c51a1",
+    fontWeight: "bold",
   },
 });
 

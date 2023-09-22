@@ -5,17 +5,24 @@ import { LinearGradient } from "expo-linear-gradient";
 import NavigationBar from "../../../components/composite/Dashboard/landlord/navigationBar";
 import { Calendar } from "react-native-calendars";
 import Swiper from "react-native-swiper";
-import SideDrawer from "../../../components/composite/Dashboard/landlord/sideDraw";
 import QuickAddButtons from "../../../components/composite/Dashboard/landlord/quickAddButtons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import theme from "../../../theme";
 
 const LandlordDashboard = ({ navigation }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showQuickAddButtons, setShowQuickAddButtons] = useState(false); // State variable to control Quick Add buttons visibility
 
   const toggleQuickAddButtons = () => {
     setShowQuickAddButtons(!showQuickAddButtons);
   };
 
+  const goToSettings = () => {
+    navigation.navigate("LandlordSettingsPage");
+  };
+
+  const handleLogout = () => {
+    navigation.navigate("Login");
+  };
   const tenants = [
     { name: "John Doe", rent: 500 },
     { name: "Jane Smith", rent: 550 },
@@ -49,10 +56,6 @@ const LandlordDashboard = ({ navigation }) => {
     0
   );
 
-  const toggleSideDrawer = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -60,6 +63,20 @@ const LandlordDashboard = ({ navigation }) => {
         style={styles.gradientContainer}
       >
         <Text style={styles.welcomeText}>Welcome Back, {userName}!</Text>
+        <TouchableOpacity style={styles.settingsIconContainer}>
+          <Icon name="cog" size={30} color="#FFF" style={styles.settingsIcon} onPress={goToSettings} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.logoutIconContainer}
+          onPress={handleLogout}
+        >
+          <Icon
+            name="logout"
+            size={30}
+            color="#FFF"
+            style={styles.logoutIcon}
+          />
+        </TouchableOpacity>
       </LinearGradient>
 
       <ScrollView>
@@ -158,12 +175,8 @@ const LandlordDashboard = ({ navigation }) => {
 
       <NavigationBar
         navigation={navigation}
-        toggleSideDrawer={toggleSideDrawer}
-        toggleQuickAddButtons={toggleQuickAddButtons}
         toggleQuickAdd={toggleQuickAddButtons} // Pass the function here
       />
-
-      {isMenuOpen && <SideDrawer onCloseDrawer={() => setIsMenuOpen(false)} />}
 
       {/* Conditionally render QuickAddButtons component */}
       {showQuickAddButtons && <QuickAddButtons />}
@@ -205,7 +218,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   swiper: {
-    height: 250, // Adjust the height as needed
+    height: 250,
   },
   tenantBox: {
     marginTop: -10,
@@ -276,9 +289,9 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#FFF",
+    color: theme.colors.primary.dark,
     textAlign: "center",
-    marginTop: 100,
+    marginTop: 140,
   },
   upcomingPaymentsContainer: {
     marginTop: -10,
@@ -293,6 +306,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     color: "black",
+  },
+  settingsIconContainer: {
+    position: "absolute",
+    right: 35,
+    top: 55,
+  },
+  settingsIcon: {
+    fontWeight: "bold",
+  },
+  logoutIconContainer: {
+    position: "absolute",
+    left: 35,
+    top: 55,
+  },
+  logoutIcon: {
+    fontWeight: "bold",
   },
 });
 
