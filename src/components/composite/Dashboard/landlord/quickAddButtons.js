@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import theme from "../../../../theme";
 
 const QuickAddButtons = ({ onAddProperty, onAddTenant }) => {
@@ -8,12 +8,12 @@ const QuickAddButtons = ({ onAddProperty, onAddTenant }) => {
     <View style={styles.quickAddContainer}>
       <TouchableOpacity onPress={onAddProperty} style={styles.quickAddButton}>
         <View style={styles.buttonIconContainer}>
-          <Icon name="home" size={32} color={theme.colors.primary.dark} />
+          <MaterialIcons name="home" size={32} color="white" />
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={onAddTenant} style={styles.quickAddButton}>
         <View style={styles.buttonIconContainer}>
-          <Icon name="account" size={32} color={theme.colors.primary.dark} />
+          <MaterialIcons name="person" size={32} color="white" />
         </View>
       </TouchableOpacity>
     </View>
@@ -24,21 +24,21 @@ const styles = StyleSheet.create({
   quickAddContainer: {
     position: "absolute",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "center",
-    top: 60,
+    bottom: 100, // This ensures the container is positioned 60 units from the bottom.
     left: 0,
     right: 0,
   },
   quickAddButton: {
     alignItems: "center",
     backgroundColor: theme.colors.primary.dark,
-    borderRadius: 30, // For circle look, radius = 0.5 * diameter
+    borderRadius: 30,
     width: 60,
     height: 60,
-    marginHorizontal: 15,
-    elevation: 5, // For Android shadow
-    shadowColor: "#000", // For iOS shadow
+    marginHorizontal: 5,
+    elevation: 5,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
