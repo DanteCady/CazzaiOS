@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, ScrollView, View, TouchableOpacity } from "react-native";
 import { Card, Title, Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import NavigationBar from "../../../components/composite/Dashboard/landlord/navigationBar";
-import { Calendar } from 'react-native-calendars';
+import { Calendar } from "react-native-calendars";
 import Swiper from "react-native-swiper";
+import SideDrawer from "../../../components/composite/Dashboard/landlord/sideDraw";
+import QuickAddButtons from "../../../components/composite/Dashboard/landlord/quickAddButtons";
 
 const LandlordDashboard = ({ navigation }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showQuickAddButtons, setShowQuickAddButtons] = useState(false); // State variable to control Quick Add buttons visibility
+
+  const toggleQuickAddButtons = () => {
+    setShowQuickAddButtons(!showQuickAddButtons);
+  };
+
   const tenants = [
     { name: "John Doe", rent: 500 },
     { name: "Jane Smith", rent: 550 },
@@ -40,17 +49,22 @@ const LandlordDashboard = ({ navigation }) => {
     0
   );
 
+  const toggleSideDrawer = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#43ecf5", "white"]}
+        colors={["#43ecf5", "#f7f7f7"]}
         style={styles.gradientContainer}
       >
         <Text style={styles.welcomeText}>Welcome Back, {userName}!</Text>
       </LinearGradient>
+
       <ScrollView>
-        {/* Financial Summary Swiper */}
-       <Swiper style={styles.swiper}>
+        <Swiper style={styles.swiper}>
+          {/* Financial Summary Swiper */}
           {/* Page 1 - Total Expected Rent */}
           <View style={styles.summaryPage}>
             <Card.Content>
@@ -63,29 +77,29 @@ const LandlordDashboard = ({ navigation }) => {
           {/* Page 2 - Metric 2 */}
           <View style={styles.summaryPage}>
             <Card.Content>
-              <Title style={styles.incomeTitle}>Total Rent Recieved</Title>
-              {/* Add content for Metric 2 */}
+              <Title style={styles.incomeTitle}>Total Rent Received</Title>
+              <Text>Add content for Metric 2 here</Text>
             </Card.Content>
           </View>
           {/* Page 3 - Metric 3 */}
           <View style={styles.summaryPage}>
             <Card.Content>
               <Title style={styles.incomeTitle}>Vacancy Rate</Title>
-              {/* Add content for Metric 3 */}
+              <Text>Add content for Metric 3 here</Text>
             </Card.Content>
           </View>
           {/* Page 4 - Metric 6 */}
           <View style={styles.summaryPage}>
             <Card.Content>
               <Title style={styles.incomeTitle}>Rent Arrears</Title>
-              {/* Add content for Metric 6 */}
+              <Text>Add content for Metric 6 here</Text>
             </Card.Content>
           </View>
           {/* Page 5 - Metric 10 */}
           <View style={styles.summaryPage}>
             <Card.Content>
               <Title style={styles.incomeTitle}>Projected Income</Title>
-              {/* Add content for Metric 10 */}
+              <Text>Add content for Metric 10 here</Text>
             </Card.Content>
           </View>
         </Swiper>
@@ -137,15 +151,25 @@ const LandlordDashboard = ({ navigation }) => {
         <View style={styles.content}>
           <Text style={styles.boxName}>Calendar</Text>
           <Calendar
-            // Customize calendar appearance and behavior here
+          // Customize calendar appearance and behavior here
           />
         </View>
       </ScrollView>
-      <NavigationBar />
+
+      <NavigationBar
+        navigation={navigation}
+        toggleSideDrawer={toggleSideDrawer}
+        toggleQuickAddButtons={toggleQuickAddButtons}
+        toggleQuickAdd={toggleQuickAddButtons} // Pass the function here
+      />
+
+      {isMenuOpen && <SideDrawer onCloseDrawer={() => setIsMenuOpen(false)} />}
+
+      {/* Conditionally render QuickAddButtons component */}
+      {showQuickAddButtons && <QuickAddButtons />}
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -222,7 +246,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.1,
     shadowRadius: 2,
   },
   paymentTenant: {
@@ -254,7 +278,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFF",
     textAlign: "center",
-    marginTop: 100
+    marginTop: 100,
   },
   upcomingPaymentsContainer: {
     marginTop: -10,
@@ -262,8 +286,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     // backgroundColor: "white",
     padding: 15,
-    height: 170
-    
+    height: 170,
   },
   upcomingPaymentsTitle: {
     fontSize: 22,

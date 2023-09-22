@@ -1,16 +1,47 @@
-import React from "react";
-import { View, TouchableOpacity, StyleSheet, Text } from "react-native"; // Import Text
+import React, { useState } from "react";
+import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../../theme";
+import QuickAddButtons from "./quickAddButtons";
 
-const NavigationBar = ({ navigation }) => {
+const NavigationBar = ({ onOpenDrawer, navigation, toggleQuickAdd }) => {
+  const [showQuickAddButtons, setShowQuickAddButtons] = useState(false);
+
+  const toggleQuickAddButtons = () => {
+    setShowQuickAddButtons(!showQuickAddButtons);
+    toggleQuickAdd(); // Call the prop function to toggle Quick Add
+  };
+
+  const goToDashboard = () => {
+    navigation.navigate("LandlordDashboard");
+  };
+
+  const goToQuickAdd = () => {
+    toggleQuickAddButtons();
+  };
+
+  const goToNotifications = () => {
+    navigation.navigate("Notifications");
+  };
+
+  const goToProfile = () => {
+    navigation.navigate("Profile");
+  };
+
+  const addProperty = () => {
+    // Handle adding a property
+    toggleQuickAddButtons();
+  };
+
+  const addTenant = () => {
+    // Handle adding a tenant
+    toggleQuickAddButtons();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Dashboard")}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={goToDashboard} style={styles.button}>
           <Icon
             name="view-dashboard"
             size={30}
@@ -18,17 +49,11 @@ const NavigationBar = ({ navigation }) => {
           />
           <Text style={styles.iconTitle}>Dashboard</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Notifications")}
-          style={styles.button}
-        >
-          <Icon name="bell" size={30} color={theme.colors.primary.dark} />
-          <Text style={styles.iconTitle}>Notifications</Text>
+        <TouchableOpacity onPress={onOpenDrawer} style={styles.button}>
+          <Icon name="menu" size={30} color={theme.colors.primary.dark} />
+          <Text style={styles.iconTitle}>Menu</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AddTenantOrProperty")}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={goToQuickAdd} style={styles.button}>
           <Icon
             name="plus-circle"
             size={30}
@@ -36,17 +61,11 @@ const NavigationBar = ({ navigation }) => {
           />
           <Text style={styles.iconTitle}>Quick Add</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.openDrawer()}
-          style={styles.button}
-        >
-          <Icon name="menu" size={30} color={theme.colors.primary.dark} />
-          <Text style={styles.iconTitle}>Menu</Text>
+        <TouchableOpacity onPress={goToNotifications} style={styles.button}>
+          <Icon name="bell" size={30} color={theme.colors.primary.dark} />
+          <Text style={styles.iconTitle}>Notifications</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={goToProfile} style={styles.button}>
           <Icon
             name="account-circle"
             size={30}
@@ -65,7 +84,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopWidth: 0.5,
     borderTopColor: "#E0E0E0",
-    height: 100, // Increased height slightly to accommodate titles
+    height: 100,
   },
   buttonsContainer: {
     flexDirection: "row",
@@ -73,11 +92,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    alignItems: "center", // Center the icon and title vertically
+    alignItems: "center",
   },
   iconTitle: {
-    fontSize: 12, // Adjust font size to your preference
-    marginTop: 5, // Space between the icon and title
+    fontSize: 12,
+    marginTop: 5,
     color: theme.colors.primary.dark,
   },
 });
