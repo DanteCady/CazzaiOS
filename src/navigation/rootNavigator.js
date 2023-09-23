@@ -8,6 +8,8 @@ import LandlordDashboard from '../screens/users/Landlords/landlordDashboard';
 import LandlordSettingsPage from "../screens/users/Landlords/settings";
 import NotificationPage from '../screens/users/Landlords/notifications';
 import FilesPage from '../screens/users/Landlords/files';
+import InboxPage from '../screens/users/Landlords/inbox';
+import MessagesPage from '../screens/users/Landlords/messages';
 import {StatusBar} from 'react-native';
 const Stack = createStackNavigator();
 
@@ -22,6 +24,8 @@ const RootNavigator = () => {
         <Stack.Screen name="LandlordDashboard" component={LandlordDashboard} options={{ headerShown: false }} />
         <Stack.Screen name="Notifications" component={NotificationPage} options={{ headerShown: false }} />
         <Stack.Screen name="Files" component={FilesPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Inbox" component={InboxPage} options={{ headerShown: false }} />
+        <Stack.Screen name="Messages" component={MessagesPage} options={{ headerShown: false }} />
         {/* Add other screen routes here */}
       </Stack.Navigator>
       

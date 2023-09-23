@@ -23,8 +23,8 @@ const NavigationBar = ({ navigation, toggleQuickAdd }) => {
     navigation.navigate("Notifications");
   };
 
-  const goToMessages = () => {
-    navigation.navigate("Profile");
+  const goToInbox = () => {
+    navigation.navigate("Inbox");
   };
 
   const goToReports = () => { // Add this function
@@ -61,7 +61,7 @@ const NavigationBar = ({ navigation, toggleQuickAdd }) => {
           <Icon name="folder" size={30} color={theme.colors.primary.dark} />
           <Text style={styles.iconTitle}>Files</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={goToMessages} style={styles.button}>
+        <TouchableOpacity onPress={goToInbox} style={styles.button}>
           <Icon name="message" size={30} color={theme.colors.primary.dark} />
           <Text style={styles.iconTitle}>Messages</Text>
         </TouchableOpacity>
