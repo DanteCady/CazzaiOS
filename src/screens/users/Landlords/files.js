@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderBottomWidth: 0.5,
     borderBottomColor: theme.colors.grey.light,
-    top: 30,
   },
   tenantTabs: {
     flexDirection: "row",
