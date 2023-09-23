@@ -7,9 +7,12 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../theme";
+
+// The InboxPage component displays a list of message conversations for a landlord.
 
 const InboxPage = ({ navigation }) => {
   const [conversations, setConversations] = useState([
@@ -19,7 +22,7 @@ const InboxPage = ({ navigation }) => {
       lastMessage: "Hey, about the rent...",
       timestamp: "10:45 AM",
       unread: true,
-      profilePhoto: "https://placeimg.com/64/64/people/1", // Placeholder image
+      profilePhoto: "https://placeimg.com/64/64/people/1",
     },
     {
       id: "2",
@@ -27,20 +30,53 @@ const InboxPage = ({ navigation }) => {
       lastMessage: "All set for this month!",
       timestamp: "Yesterday",
       unread: false,
-      profilePhoto: "https://placeimg.com/64/64/people/2", // Placeholder image
+      profilePhoto: "https://placeimg.com/64/64/people/2",
     },
-    // ... Add more dummy data as needed
   ]);
 
+  // The InboxPage component displays a list of message conversations for a landlord.
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedChats, setSelectedChats] = useState([]);
+
+  // The InboxPage component displays a list of message conversations for a landlord.
   const handleBack = () => {
-    navigation.navigate("LandlordDashboard");
+    if (selectionMode) {
+      clearSelection();
+    } else {
+      navigation.navigate("LandlordDashboard");
+    }
   };
 
-  const markAsRead = (id) => {
+  // The InboxPage component displays a list of message conversations for a landlord.
+  const toggleChatSelection = (id) => {
+    if (selectedChats.includes(id)) {
+      setSelectedChats((prev) => prev.filter((chatId) => chatId !== id));
+    } else {
+      setSelectedChats((prev) => [...prev, id]);
+    }
+  };
+
+  // The InboxPage component displays a list of message conversations for a landlord.
+  const handleLongPress = (id) => {
+    setSelectionMode(true);
+    toggleChatSelection(id);
+  };
+
+  // Marks the selected chats as read
+  const handleMarkSelectedAsRead = () => {
     let updatedConversations = [...conversations];
-    let chat = updatedConversations.find((conv) => conv.id === id);
-    chat.unread = false;
+    selectedChats.forEach((id) => {
+      let chat = updatedConversations.find((conv) => conv.id === id);
+      chat.unread = false;
+    });
     setConversations(updatedConversations);
+    clearSelection();
+  };
+
+
+  const clearSelection = () => {
+    setSelectedChats([]);
+    setSelectionMode(false);
   };
 
   return (
@@ -48,31 +84,46 @@ const InboxPage = ({ navigation }) => {
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
           <Icon
-            name="arrow-left"
+            name={selectionMode ? "close" : "arrow-left"}
             size={theme.spacing.large}
             color={theme.colors.grey.dark}
           />
         </TouchableOpacity>
         <Text style={styles.headerText}>Inbox</Text>
       </View>
+      {selectionMode && (
+        <View style={styles.actionBar}>
+          <Button title="Mark as Read" onPress={handleMarkSelectedAsRead} />
+          <Button title="Cancel" onPress={clearSelection} />
+        </View>
+      )}
       <FlatList
         data={conversations}
         style={styles.flatList}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.chatItem}
-            onPress={() => navigation.navigate("MessagesPage")}
-            onLongPress={() => {
-              Alert.alert(
-                "Mark as Read",
-                "Do you want to mark this conversation as read?",
-                [
-                  { text: "Cancel", style: "cancel" },
-                  { text: "OK", onPress: () => markAsRead(item.id) },
-                ]
-              );
+            onPress={() => {
+              if (selectionMode) {
+                toggleChatSelection(item.id);
+              } else {
+                navigation.navigate("MessagesPage");
+              }
             }}
+            onLongPress={() => handleLongPress(item.id)}
           >
+            {selectionMode && (
+              <Icon
+                name={
+                  selectedChats.includes(item.id)
+                    ? "checkbox-marked-circle"
+                    : "checkbox-blank-circle-outline"
+                }
+                size={24}
+                color={theme.colors.primary}
+                style={{ marginRight: 10 }}
+              />
+            )}
             <Image
               source={{ uri: item.profilePhoto }}
               style={styles.profilePhoto}
@@ -91,6 +142,7 @@ const InboxPage = ({ navigation }) => {
   );
 };
 
+// Styling for the InboxPage component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -112,17 +164,11 @@ const styles = StyleSheet.create({
     zIndex: 10,
     padding: 10,
   },
-  helpIcon: {
-    position: "absolute",
-    right: theme.spacing.large,
-    zIndex: 10,
-    padding: 10,
-  },
   headerText: {
     ...theme.typography.header,
   },
   flatList: {
-    marginTop: 30, // To account for the header's top positioning
+    marginTop: 30,
   },
   chatItem: {
     flexDirection: "row",
@@ -158,6 +204,13 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+  },
+  actionBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: theme.spacing.medium,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.grey.light,
   },
 });
 

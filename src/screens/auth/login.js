@@ -7,25 +7,26 @@ import {
   Text,
   Image,
 } from "react-native";
-// import CheckBox from '@react-native-community/checkbox';
-import { Button, TextInput, Title } from "react-native-paper";
-import { LinearGradient } from "expo-linear-gradient";
-import { NavigationContainer } from "@react-navigation/native";
+import { Button, TextInput } from "react-native-paper";
 import theme from "../../theme";
 
 const LoginScreen = ({ navigation }) => {
+  // Initialize states for email, password, and password visibility
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for showing or hiding password
+  const [showPassword, setShowPassword] = useState(false);
 
+  // Logic for user login; should be replaced with authentication logic
   const handleLogin = () => {
     // Handle login logic here
   };
 
+  // Navigate to the Signup screen
   const goToSignup = () => {
     navigation.navigate("Signup");
   };
 
+  // Logic for biometric authentication; to be implemented
   const handleBiometric = () => {
     // Handle biometric authentication here
   };
@@ -33,11 +34,14 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.loginContainer}>
+        {/* App logo */}
         <Image
           source={require("../../assets/apple-touch-icon.png")}
           style={styles.logo}
         />
         <Text style={styles.title}>Welcome to Cazza!</Text>
+
+        {/* Email input */}
         <TextInput
           label="Email"
           value={email}
@@ -47,23 +51,25 @@ const LoginScreen = ({ navigation }) => {
           keyboardType="email-address"
           autoCapitalize="none"
         />
+
+        {/* Password input */}
         <TextInput
           label="Password"
           value={password}
           onChangeText={setPassword}
           mode="outlined"
           style={styles.input}
-          secureTextEntry={!showPassword} // Controlled by showPassword state
+          secureTextEntry={!showPassword}
         />
 
+        {/* Section for 'Forgot Password' link */}
         <View style={styles.forgotPasswordContainer}>
-          {/* <CheckBox value={showPassword} onValueChange={setShowPassword} /> */}
-          {/* <Text>Show Password</Text> */}
           <TouchableOpacity>
             <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
 
+        {/* Login button and biometric (FaceID) authentication */}
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
@@ -73,6 +79,8 @@ const LoginScreen = ({ navigation }) => {
           >
             Login
           </Button>
+
+          {/* Biometric authentication */}
           <TouchableOpacity>
             <Image
               source={require("../../assets/Face_ID_logo.svg.png")}
@@ -82,12 +90,12 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
+        {/* Footer: Contains Sign Up link, version, and other terms */}
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.signUpContainer} onPress={goToSignup}>
             <Text style={styles.signUpText}>Don't have an account? </Text>
             <Text style={styles.signUpLink}>Sign up</Text>
           </TouchableOpacity>
-
           <Text style={styles.version}>Version 1.0.0</Text>
           <TouchableOpacity>
             <Text style={styles.termsLink}>Terms of Service</Text>
@@ -101,6 +109,7 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
+// Styles for the LoginScreen component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -12,16 +12,19 @@ import {
 import * as DocumentPicker from "expo-document-picker";
 import theme from "../../../../theme";
 
+// A custom dropdown component that displays options from the data prop
 const CustomDropdown = ({ data, selectedValue, onSelect }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // Tracks if dropdown is open or closed
 
   return (
     <View style={styles.dropdownContainer}>
+      {/* This is the dropdown header which displays the currently selected value */}
       <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
         <View style={styles.dropdownHeader}>
           <Text>{selectedValue || "Select..."}</Text>
         </View>
       </TouchableOpacity>
+      {/* When the dropdown is open, it shows a list of all the available options */}
       {isOpen && (
         <ScrollView style={styles.dropdownList}>
           {data.map((item, index) => (
@@ -41,11 +44,13 @@ const CustomDropdown = ({ data, selectedValue, onSelect }) => {
   );
 };
 
+// This modal handles the file uploading functionality
 const UploadFileModal = ({ isVisible, onClose, files, handleFileUpload }) => {
-  const [chosenFileName, setChosenFileName] = useState("");
-  const [selectedTenant, setSelectedTenant] = useState(null);
-  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [chosenFileName, setChosenFileName] = useState(""); // Store the name of the chosen file
+  const [selectedTenant, setSelectedTenant] = useState(null); // Store the chosen tenant
+  const [selectedProperty, setSelectedProperty] = useState(null); // Store the chosen property
 
+  // Function to open the document picker and let user pick a file
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({});
@@ -60,25 +65,32 @@ const UploadFileModal = ({ isVisible, onClose, files, handleFileUpload }) => {
   return (
     <Modal animationType="slide" transparent={false} visible={isVisible}>
       <View style={styles.modalContainer}>
+        {/* Modal header indicating the purpose of the modal */}
         <Text style={styles.modalHeader}>Upload File</Text>
 
+        {/* Button that triggers the document picker */}
         <Button title="Choose File" onPress={pickDocument} />
+
+        {/* If a file is chosen, its name is displayed */}
         {chosenFileName && (
           <Text style={styles.chosenFileName}>Selected: {chosenFileName}</Text>
         )}
 
+        {/* Dropdown for tenant selection */}
         <CustomDropdown
           data={files.map((fileGroup) => fileGroup.tenant)}
           selectedValue={selectedTenant}
           onSelect={(value) => setSelectedTenant(value)}
         />
 
+        {/* Dropdown for property selection */}
         <CustomDropdown
           data={files.map((fileGroup) => fileGroup.property)}
           selectedValue={selectedProperty}
           onSelect={(value) => setSelectedProperty(value)}
         />
 
+        {/* TextInput to rename the selected file if necessary */}
         <TextInput
           value={chosenFileName}
           onChangeText={setChosenFileName}
@@ -86,12 +98,14 @@ const UploadFileModal = ({ isVisible, onClose, files, handleFileUpload }) => {
           style={styles.searchInput}
         />
 
+        {/* Button to confirm and trigger the upload process */}
         <Button title="Upload" onPress={handleFileUpload} />
       </View>
     </Modal>
   );
 };
 
+// Styles for the components
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,

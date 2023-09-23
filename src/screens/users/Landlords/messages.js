@@ -12,12 +12,14 @@ import * as DocumentPicker from "expo-document-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import theme from "../../../theme";
 
-
+// Main MessagesPage component for displaying and sending messages
 const MessagesPage = () => {
+  // Main MessagesPage component for displaying and sending messages
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [attachedFile, setAttachedFile] = useState(null);
 
+  // Main MessagesPage component for displaying and sending messages
   const handleSendMessage = () => {
     if (inputMessage.trim().length > 0) {
       setMessages((prev) => [
@@ -28,6 +30,7 @@ const MessagesPage = () => {
     }
   };
 
+  // Main MessagesPage component for displaying and sending messages
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({});
@@ -39,6 +42,7 @@ const MessagesPage = () => {
     }
   };
 
+  // Main MessagesPage component for displaying and sending messages
   const exportMessages = () => {
     // Handle the export functionality here
   };
@@ -56,7 +60,7 @@ const MessagesPage = () => {
           </TouchableOpacity>
         </View>
       </View>
-
+      {/* FlatList to render list of messages */}
       <FlatList
         data={messages}
         renderItem={({ item }) => (
@@ -80,6 +84,7 @@ const MessagesPage = () => {
   );
 };
 
+// Styling for the MessagesPage component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

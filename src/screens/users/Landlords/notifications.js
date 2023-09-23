@@ -10,6 +10,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../theme";
 
+// Initial set of notifications
 const initialNotifications = [
   {
     id: "1",
@@ -30,9 +31,11 @@ const initialNotifications = [
   // ... Add more notifications as needed
 ];
 
+// Initial set of notifications
 const NotificationPage = ({navigation}) => {
   const [notifications, setNotifications] = useState(initialNotifications);
 
+  // Initial set of notifications
   const markAsRead = (id) => {
     const updatedNotifications = notifications.map((notification) =>
       notification.id === id
@@ -42,6 +45,7 @@ const NotificationPage = ({navigation}) => {
     setNotifications(updatedNotifications);
   };
 
+  // Function to delete a specific notification
   const deleteNotification = (id) => {
     const updatedNotifications = notifications.filter(
       (notification) => notification.id !== id
@@ -49,16 +53,18 @@ const NotificationPage = ({navigation}) => {
     setNotifications(updatedNotifications);
   };
 
+  // Function to clear all notifications
   const clearAllNotifications = () => {
     setNotifications([]);
-    };
+  };
 
-const handleBack = () => {
+  // Function to handle navigation back to the landlord dashboard
+  const handleBack = () => {
     navigation.navigate("LandlordDashboard");
-};
+  };
 
   return (
-      <View style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack}>
           <Icon
@@ -103,6 +109,7 @@ const handleBack = () => {
   );
 };
 
+// Styles for the NotificationPage component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

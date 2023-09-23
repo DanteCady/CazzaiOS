@@ -1,3 +1,4 @@
+// Importing necessary libraries and components
 import React, { useState } from "react";
 import {
   View,
@@ -9,6 +10,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../theme";
 
+// Data structure for landlord settings, organized by category and sub-items
 const settingsData = [
   {
     title: "Profile",
@@ -75,16 +77,18 @@ const settingsData = [
   },
 ];
 
-
-
 const LandlordSettingsPage = ({ navigation }) => {
+  // State to track the currently selected (expanded) settings category
   const [selectedSetting, setSelectedSetting] = useState(null);
 
-    const handleBack = () => {
-  navigation.navigate("LandlordDashboard");
-};
+  // Handler to navigate back to the LandlordDashboard
+  const handleBack = () => {
+    navigation.navigate("LandlordDashboard");
+  };
+
   return (
     <View style={styles.container}>
+      {/* Header consisting of a back button, the page title, and a help icon */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack}>
           <Icon
@@ -101,11 +105,13 @@ const LandlordSettingsPage = ({ navigation }) => {
         />
       </View>
 
+      {/* List of settings categories, expandable to show sub-settings */}
       <FlatList
         data={settingsData}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => (
           <View>
+            {/* Each main setting category has an icon, title, and an arrow indicating expand/collapse state */}
             <TouchableOpacity
               style={styles.listItem}
               onPress={() => {
@@ -133,6 +139,7 @@ const LandlordSettingsPage = ({ navigation }) => {
               />
             </TouchableOpacity>
 
+            {/* If a main setting category is selected, its sub-items are rendered below it */}
             {selectedSetting === item.title &&
               item.subItems.map((sub) => (
                 <View style={styles.subItem} key={sub.title}>
@@ -145,6 +152,7 @@ const LandlordSettingsPage = ({ navigation }) => {
         )}
       />
 
+      {/* Footer displaying the current version of the application */}
       <View style={styles.footer}>
         <Text style={theme.typography.caption}>Version: 1.0.0</Text>
       </View>
@@ -152,7 +160,7 @@ const LandlordSettingsPage = ({ navigation }) => {
   );
 };
 
-
+// Styles for this component, leveraging a theme for consistent design
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -3,18 +3,15 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Platform,
   TouchableOpacity,
   Text,
 } from "react-native";
-import { Button, TextInput, Title } from "react-native-paper";
+import { Button, TextInput, Title, IconButton } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { ButtonGroup } from "react-native-elements";
-import { NavigationContainer } from "@react-navigation/native";
-import { IconButton } from "react-native-paper";
 import theme from "../../theme";
 
 const SignUpScreen = ({ navigation }) => {
+  // Local state definitions for user sign-up details
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,18 +19,18 @@ const SignUpScreen = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [birthDate, setBirthDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0); // 0 for Tenant, 1 for Landlord
 
+  // Function to navigate back to the Login screen
   const goToLogin = () => {
     navigation.navigate("Login");
   };
 
-  const buttons = ["Tenant", "Landlord"];
-
+  // Placeholder sign-up function; should be replaced with real sign-up logic
   const handleSignUp = () => {
     // Handle sign-up logic here
   };
 
+  // Handle date change from date picker
   const handleDateChange = (event, selectedDate) => {
     setShowDatePicker(false);
     if (selectedDate) setBirthDate(selectedDate);
@@ -42,8 +39,10 @@ const SignUpScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.signupContainer}>
+        {/* Page title */}
         <Title style={styles.title}>Sign Up</Title>
 
+        {/* User input fields */}
         <TextInput
           label="First Name"
           value={firstName}
@@ -78,19 +77,21 @@ const SignUpScreen = ({ navigation }) => {
           keyboardType="phone-pad"
         />
 
+        {/* Birth date input with a date picker */}
         <View style={styles.dateContainer}>
           <TextInput
             label="Birth Date"
             value={birthDate.toLocaleDateString()}
-            // mode="outlined"
             style={styles.dateInput}
-            editable={false} // make it non-editable since we're using a date picker
+            editable={false} // This input is non-editable
           />
+          {/* Calendar icon that triggers the date picker */}
           <IconButton
             icon="calendar"
             size={24}
             onPress={() => setShowDatePicker(true)}
           />
+          {/* Conditional rendering of the date picker */}
           {showDatePicker && (
             <DateTimePicker
               value={birthDate}
@@ -101,6 +102,7 @@ const SignUpScreen = ({ navigation }) => {
           )}
         </View>
 
+        {/* Sign Up button */}
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
@@ -111,6 +113,8 @@ const SignUpScreen = ({ navigation }) => {
             Sign Up
           </Button>
         </View>
+
+        {/* Link to navigate back to Login screen */}
         <TouchableOpacity onPress={goToLogin} style={styles.backToLogin}>
           <Text style={styles.backToLoginText}>
             Already have an account? Log in
@@ -121,6 +125,7 @@ const SignUpScreen = ({ navigation }) => {
   );
 };
 
+// Styles for the SignUpScreen component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

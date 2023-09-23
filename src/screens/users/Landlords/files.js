@@ -1,15 +1,13 @@
+// Import necessary libraries and components
 import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   FlatList,
-  Button,
   TextInput,
   TouchableOpacity,
-  Modal,
   SafeAreaView,
-  Platform,
   ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
@@ -17,7 +15,9 @@ import theme from "../../../theme";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import UploadFileModal from "../../../components/composite/Dashboard/landlord/fileUpload";
 
+// Component to manage files related to tenants
 const FilesPage = ({ navigation }) => {
+  // State containing file data for tenants
   const [files, setFiles] = useState([
     {
       tenant: "Dante Cady",
@@ -58,8 +58,8 @@ const FilesPage = ({ navigation }) => {
           dateUploaded: "2023-06-14",
         },
       ],
-      },
-      {
+    },
+    {
       tenant: "Ashley Grahm",
       files: [
         {
@@ -70,12 +70,21 @@ const FilesPage = ({ navigation }) => {
       ],
     },
   ]);
+
+  // State to track currently selected tenant
   const [selectedTenant, setSelectedTenant] = useState(null);
+
+  // State to handle file search functionality
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Modal visibility state for file upload
   const [isUploadModalVisible, setUploadModalVisibility] = useState(false);
+
+  // States for file uploading process
   const [selectedProperty, setSelectedProperty] = useState("");
   const [tags, setTags] = useState([]);
 
+  // Function to handle the file upload action
   const handleFileUpload = () => {
     setUploadModalVisibility(false);
   };
@@ -83,6 +92,7 @@ const FilesPage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        {/* Header with navigation and page title */}
         <View style={styles.header}>
           <TouchableOpacity
             onPress={() => navigation.navigate("LandlordDashboard")}
@@ -101,6 +111,7 @@ const FilesPage = ({ navigation }) => {
           />
         </View>
 
+        {/* Horizontal scrollable tenant tabs */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -120,6 +131,7 @@ const FilesPage = ({ navigation }) => {
           ))}
         </ScrollView>
 
+        {/* Search bar for files */}
         <TextInput
           value={searchTerm}
           onChangeText={setSearchTerm}
@@ -127,6 +139,7 @@ const FilesPage = ({ navigation }) => {
           style={styles.searchInput}
         />
 
+        {/* List of files based on selected tenant */}
         <FlatList
           data={
             selectedTenant
@@ -145,6 +158,7 @@ const FilesPage = ({ navigation }) => {
         />
       </ScrollView>
 
+      {/* File upload modal */}
       <UploadFileModal
         isVisible={isUploadModalVisible}
         onClose={() => setUploadModalVisibility(false)}
@@ -155,6 +169,8 @@ const FilesPage = ({ navigation }) => {
         selectedProperty={selectedProperty}
         setSelectedProperty={setSelectedProperty}
       />
+
+      {/* Floating button to open file upload modal */}
       <TouchableOpacity
         style={styles.uploadButton}
         onPress={() => setUploadModalVisibility(true)}
@@ -165,6 +181,7 @@ const FilesPage = ({ navigation }) => {
   );
 };
 
+// Styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
