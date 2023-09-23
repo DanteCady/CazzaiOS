@@ -5,10 +5,14 @@ import {
   View,
   TouchableOpacity,
   Text,
+  Alert,
 } from "react-native";
 import { Button, TextInput, Title, IconButton } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import theme from "../../theme";
+import axios from "axios";
+import * as LocalAuthentication from "expo-local-authentication";
+import { RadioButton } from "react-native-paper";
 
 const SignUpScreen = ({ navigation }) => {
   // Local state definitions for user sign-up details
@@ -19,17 +23,104 @@ const SignUpScreen = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [birthDate, setBirthDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-
+  const [userType, setUserType] = useState("");
+  
   // Function to navigate back to the Login screen
   const goToLogin = () => {
     navigation.navigate("Login");
   };
 
-  // Placeholder sign-up function; should be replaced with real sign-up logic
-  const handleSignUp = () => {
-    // Handle sign-up logic here
-  };
+ const handleSignUp = async () => {
+   try {
+     // API call
+     const response = await axios.post(
+       "http://192.168.17.1:3000/api/users/signup",
+       {
+         firstName,
+         lastName,
+         email,
+         password,
+         phone,
+         birthDate: birthDate.toISOString(),
+         userType,
+       }
+     );
 
+     if (response.data.success) {
+       const authTypes =
+         await LocalAuthentication.supportedAuthenticationTypesAsync();
+       let supportsFaceID = authTypes.includes(
+         LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION
+       );
+       let supportsTouchID = authTypes.includes(
+         LocalAuthentication.AuthenticationType.FINGERPRINT
+       );
+
+       let authMessage = "";
+       if (supportsFaceID) {
+         authMessage = "Would you like to use FaceID to log in?";
+       } else if (supportsTouchID) {
+         authMessage = "Would you like to use TouchID to log in?";
+       }
+
+       if (authMessage) {
+         Alert.alert(
+           "Authentication Setup",
+           authMessage,
+           [
+             {
+               text: "No",
+               onPress: () =>
+                 console.log("User declined biometric authentication setup."),
+               style: "cancel",
+             },
+             {
+               text: "Yes",
+               onPress: async () => {
+                 // Here, you can store the user's choice for biometric login.
+                 // For instance, save the preference in AsyncStorage or your backend.
+                 const authResult =
+                   await LocalAuthentication.authenticateAsync();
+                 if (!authResult.success) {
+                   console.error(
+                     "Biometric authentication setup failed:",
+                     authResult.error
+                   );
+                   Alert.alert(
+                     "Error",
+                     "Biometric authentication setup failed. Please try again."
+                   );
+                 } else {
+                   // Biometric setup succeeded
+                   Alert.alert("Success", "Sign-up completed!");
+                 }
+               },
+             },
+           ],
+           { cancelable: false }
+         );
+       } else {
+         // Biometric authentication is not available
+         Alert.alert("Success", "Sign-up completed!");
+       }
+     } else {
+       // Sign-up failed
+       console.error("Sign-up failed:", response.data.message);
+       Alert.alert(
+         "Error",
+         "Sign-up failed. Please check your information and try again."
+       );
+     }
+   } catch (error) {
+     console.error("An unexpected error occurred:", error);
+     Alert.alert(
+       "Error",
+       "An unexpected error occurred. Please try again later."
+     );
+   }
+ };
+
+  
   // Handle date change from date picker
   const handleDateChange = (event, selectedDate) => {
     setShowDatePicker(false);
@@ -100,6 +191,33 @@ const SignUpScreen = ({ navigation }) => {
               onChange={handleDateChange}
             />
           )}
+        </View>
+        {/* User type radio buttons */}
+        <View style={styles.toggleContainer}>
+          <RadioButton.Group
+            onValueChange={(value) => setUserType(value)}
+            value={userType || null} // Use null as the initial value
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <RadioButton
+                value="tenant"
+                status={userType === "tenant" ? "checked" : "unchecked"}
+                onValueChange={() => setUserType("tenant")}
+                color={theme.colors.primary.main}
+                backgroundColor={theme.colors.primary.dark}
+              />
+              <Text style={{ marginRight: 20 }}>Tenant</Text>
+
+              <RadioButton
+                value="landlord"
+                status={userType === "landlord" ? "checked" : "unchecked"}
+                onValueChange={() => setUserType("landlord")}
+                color={theme.colors.primary.main}
+                backgroundColor={theme.colors.primary.dark}
+              />
+              <Text>Landlord</Text>
+            </View>
+          </RadioButton.Group>
         </View>
 
         {/* Sign Up button */}

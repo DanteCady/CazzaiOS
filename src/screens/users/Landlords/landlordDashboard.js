@@ -64,7 +64,13 @@ const LandlordDashboard = ({ navigation }) => {
       >
         <Text style={styles.welcomeText}>Welcome Back, {userName}!</Text>
         <TouchableOpacity style={styles.settingsIconContainer}>
-          <Icon name="cog" size={30} color="#FFF" style={styles.settingsIcon} onPress={goToSettings} />
+          <Icon
+            name="cog"
+            size={30}
+            color="#FFF"
+            style={styles.settingsIcon}
+            onPress={goToSettings}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.logoutIconContainer}

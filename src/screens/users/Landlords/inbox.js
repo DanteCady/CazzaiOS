@@ -73,7 +73,6 @@ const InboxPage = ({ navigation }) => {
     clearSelection();
   };
 
-
   const clearSelection = () => {
     setSelectedChats([]);
     setSelectionMode(false);

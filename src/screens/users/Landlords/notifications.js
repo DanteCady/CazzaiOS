@@ -32,7 +32,7 @@ const initialNotifications = [
 ];
 
 // Initial set of notifications
-const NotificationPage = ({navigation}) => {
+const NotificationPage = ({ navigation }) => {
   const [notifications, setNotifications] = useState(initialNotifications);
 
   // Initial set of notifications

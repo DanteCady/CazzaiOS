@@ -9,16 +9,69 @@ import {
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import theme from "../../theme";
-
+import axios from "axios";
+import { Alert } from "react-native";
 const LoginScreen = ({ navigation }) => {
   // Initialize states for email, password, and password visibility
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Logic for user login; should be replaced with authentication logic
-  const handleLogin = () => {
-    // Handle login logic here
+  // Logic for user login
+  const handleLogin = async () => {
+    try {
+      // Send a POST request to the login endpoint
+      const response = await axios.post(
+        "http://192.168.17.1:3000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      if (response.data.token) {
+        // Store the JWT token securely (e.g., using AsyncStorage or Redux)
+        const token = response.data.token;
+        const userType = response.data.userType; // Retrieve userType from the response
+
+        if (userType === "landlord") {
+          // Navigate to the landlord dashboard
+          navigation.navigate("LandlordDashboard", { token });
+        } else if (userType === "tenant") {
+          // Navigate to the tenant dashboard
+          navigation.navigate("TenantDashboard", { token });
+        } else {
+          // Handle other user types or scenarios
+          Alert.alert("Login Failed", "Invalid user type.");
+        }
+      } else {
+        // Handle login failure
+        Alert.alert("Login Failed", "Invalid credentials. Please try again.");
+      }
+    } catch (error) {
+      if (error.response) {
+        // The request was made, but the server responded with an error status code
+        console.error("Server error:", error.response.data);
+        Alert.alert(
+          "Server Error",
+          "An error occurred on the server. Please try again later."
+        );
+      } else if (error.request) {
+        // The request was made, but there was no response from the server
+        console.error("Network error:", error.request);
+        Alert.alert(
+          "Network Error",
+          "Unable to connect to the server. Please check your network connection."
+        );
+      } else {
+        // Something else went wrong
+        console.error("Unexpected error:", error);
+        Alert.alert(
+          "Login Error",
+          "An unexpected error occurred while logging in."
+        );
+      }
+    }
   };
 
   // Navigate to the Signup screen
