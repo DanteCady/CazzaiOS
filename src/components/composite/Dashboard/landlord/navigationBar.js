@@ -15,6 +15,9 @@ const NavigationBar = ({ navigation, toggleQuickAdd }) => {
   const goToDashboard = () => {
     navigation.navigate("LandlordDashboard");
   };
+  const goToFiles = () => {
+    navigation.navigate("Files");
+  };
 
   const goToNotifications = () => {
     navigation.navigate("Notifications");
@@ -54,7 +57,7 @@ const NavigationBar = ({ navigation, toggleQuickAdd }) => {
           <Icon name="bell" size={30} color={theme.colors.primary.dark} />
           <Text style={styles.iconTitle}>Notifications</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={goToReports} style={styles.button}>
+        <TouchableOpacity onPress={goToFiles} style={styles.button}>
           <Icon name="folder" size={30} color={theme.colors.primary.dark} />
           <Text style={styles.iconTitle}>Files</Text>
         </TouchableOpacity>

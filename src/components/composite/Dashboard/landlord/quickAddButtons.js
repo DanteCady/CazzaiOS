@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     bottom: 100,
     left: 0,
-    right: 95,
+    right: 145,
   },
   quickAddButton: {
     alignItems: "center",
