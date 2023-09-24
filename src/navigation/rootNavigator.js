@@ -5,12 +5,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/auth/login';
 import SignUpScreen from '../screens/auth/signUp';
 import LandlordDashboard from '../screens/users/Landlords/landlordDashboard';
-import LandlordSettingsPage from "../screens/users/Landlords/settings";
+import LandlordSettingsPage from "../screens/users/Landlords/settings/settings";
 import NotificationPage from '../screens/users/Landlords/notifications';
 import FilesPage from '../screens/users/Landlords/files';
 import InboxPage from '../screens/users/Landlords/inbox';
 import MessagesPage from '../screens/users/Landlords/messages';
 import {StatusBar} from 'react-native';
+import TenantDashboard from '../screens/users/Tenants/tenantDashboard';
+
 const Stack = createStackNavigator();
 
 const RootNavigator = () => {
@@ -26,6 +28,7 @@ const RootNavigator = () => {
         <Stack.Screen name="Files" component={FilesPage} options={{ headerShown: false }} />
         <Stack.Screen name="Inbox" component={InboxPage} options={{ headerShown: false }} />
         <Stack.Screen name="Messages" component={MessagesPage} options={{ headerShown: false }} />
+        <Stack.Screen name="TenantDashboard" component={TenantDashboard} options={{ headerShown: false }} />
         {/* Add other screen routes here */}
       </Stack.Navigator>
       
