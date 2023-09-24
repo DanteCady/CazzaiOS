@@ -12,6 +12,9 @@ import InboxPage from '../screens/users/Landlords/inbox';
 import MessagesPage from '../screens/users/Landlords/messages';
 import {StatusBar} from 'react-native';
 import TenantDashboard from '../screens/users/Tenants/tenantDashboard';
+import ChangePassword from '../screens/users/Landlords/settings/Profile/changePassword';
+import EditProfile from '../screens/users/Landlords/settings/Profile/editProfile';
+import PaymentMethods from '../screens/users/Landlords/settings/paymentMethods';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +22,7 @@ const RootNavigator = () => {
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
-      <Stack.Navigator initialRouteName="Login" options={{ presentation: 'modal' }}>
+      <Stack.Navigator initialRouteName="ManagePaymentMethods" options={{ presentation: 'modal' }}>
         <Stack.Screen name="Signup" component={SignUpScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="LandlordSettingsPage" component={LandlordSettingsPage} options={{ headerShown: false }} />
@@ -29,6 +32,9 @@ const RootNavigator = () => {
         <Stack.Screen name="Inbox" component={InboxPage} options={{ headerShown: false }} />
         <Stack.Screen name="Messages" component={MessagesPage} options={{ headerShown: false }} />
         <Stack.Screen name="TenantDashboard" component={TenantDashboard} options={{ headerShown: false }} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />
+        <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+        <Stack.Screen name="ManagePaymentMethods" component={PaymentMethods} options={{ headerShown: false }} />
         {/* Add other screen routes here */}
       </Stack.Navigator>
       

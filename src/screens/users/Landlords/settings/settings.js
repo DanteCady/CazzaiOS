@@ -1,4 +1,3 @@
-// Importing necessary libraries and components
 import React, { useState } from "react";
 import {
   View,
@@ -9,16 +8,16 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../../theme";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
-// Data structure for landlord settings, organized by category and sub-items
 const settingsData = [
   {
     title: "Profile",
     icon: "account",
     subItems: [
-      { title: "Edit Profile" },
-      { title: "Change Password" },
-      { title: "Manage Payment Methods" },
+      { title: "Edit Profile", route: "EditProfile" },
+      { title: "Change Password", route: "ChangePassword" },
+      { title: "Manage Payment Methods", route: "ManagePaymentMethods" },
     ],
   },
   {
@@ -45,8 +44,13 @@ const settingsData = [
     subItems: [
       { title: "Privacy Policy" },
       { title: "Two-Factor Authentication" },
-      { title: "Delete Account"}
-      {title: "Download Data"}
+      { title: "Delete Account" },
+      { title: "Download Data" },
+      { title: "Camera" },
+      { title: "Location" },
+      { title: "Photos" },
+      { title: "Contacts" },
+      { title: "Microphone" },
     ],
   },
   {
@@ -78,18 +82,17 @@ const settingsData = [
   },
 ];
 
-const LandlordSettingsPage = ({ navigation }) => {
-  // State to track the currently selected (expanded) settings category
+const LandlordSettingsPage = () => {
   const [selectedSetting, setSelectedSetting] = useState(null);
+  const navigation = useNavigation(); // Initialize the navigation object
 
-  // Handler to navigate back to the LandlordDashboard
   const handleBack = () => {
-    navigation.navigate("LandlordDashboard");
+    // Handle navigating back to the previous screen
+    navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      {/* Header consisting of a back button, the page title, and a help icon */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack}>
           <Icon
@@ -106,13 +109,11 @@ const LandlordSettingsPage = ({ navigation }) => {
         />
       </View>
 
-      {/* List of settings categories, expandable to show sub-settings */}
       <FlatList
         data={settingsData}
         keyExtractor={(item) => item.title}
         renderItem={({ item }) => (
           <View>
-            {/* Each main setting category has an icon, title, and an arrow indicating expand/collapse state */}
             <TouchableOpacity
               style={styles.listItem}
               onPress={() => {
@@ -140,20 +141,26 @@ const LandlordSettingsPage = ({ navigation }) => {
               />
             </TouchableOpacity>
 
-            {/* If a main setting category is selected, its sub-items are rendered below it */}
             {selectedSetting === item.title &&
               item.subItems.map((sub) => (
-                <View style={styles.subItem} key={sub.title}>
+                <TouchableOpacity
+                  style={styles.subItem}
+                  key={sub.title}
+                  onPress={() => {
+                    if (sub.route) {
+                      navigation.navigate(sub.route); // Navigate to the specified route
+                    }
+                  }}
+                >
                   <Text style={[theme.typography.caption, styles.subItemText]}>
                     {sub.title}
                   </Text>
-                </View>
+                </TouchableOpacity>
               ))}
           </View>
         )}
       />
 
-      {/* Footer displaying the current version of the application */}
       <View style={styles.footer}>
         <Text style={theme.typography.caption}>Version: 1.0.0</Text>
       </View>
@@ -161,7 +168,6 @@ const LandlordSettingsPage = ({ navigation }) => {
   );
 };
 
-// Styles for this component, leveraging a theme for consistent design
 const styles = StyleSheet.create({
   container: {
     flex: 1,
