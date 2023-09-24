@@ -8,7 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import theme from "../../../theme";
+import theme from "../../../../theme";
 
 // Data structure for landlord settings, organized by category and sub-items
 const settingsData = [
@@ -45,7 +45,8 @@ const settingsData = [
     subItems: [
       { title: "Privacy Policy" },
       { title: "Two-Factor Authentication" },
-      { title: "Manage Active Sessions" },
+      { title: "Delete Account"}
+      {title: "Download Data"}
     ],
   },
   {
