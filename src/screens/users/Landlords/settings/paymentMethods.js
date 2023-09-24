@@ -5,10 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Modal,
+  TextInput,
+  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../../theme";
-import BankAccountModal from "../../../../components/composite/Payments/landlord/bankAccountModal";
+import BankAccountModal from "../../../../components/composite/Payments/landlord/addBankAccountModal";
+import ModifyBankAccountModal from "../../../../components/composite/Payments/landlord/modifyBankAccountModaj";
 
 // Function to format a number with asterisks, leaving the last 4 digits visible
 const formatNumberWithAsterisks = (number) => {
@@ -23,6 +27,10 @@ const formatNumberWithAsterisks = (number) => {
 const PaymentMethodsPage = ({ navigation }) => {
   const [isAddingBankAccount, setIsAddingBankAccount] = useState(false);
   const [bankAccounts, setBankAccounts] = useState([]);
+  const [selectedAccounts, setSelectedAccounts] = useState([]);
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [isModifyModalVisible, setIsModifyModalVisible] = useState(false);
+  const [modifyAccount, setModifyAccount] = useState(null);
 
   const handleOpenModal = () => {
     if (bankAccounts.length >= 3) {
@@ -63,6 +71,59 @@ const PaymentMethodsPage = ({ navigation }) => {
     navigation.navigate("LandlordSettingsPage");
   };
 
+  const handleLongPress = (item) => {
+    if (!selectionMode) {
+      setSelectionMode(true);
+      setSelectedAccounts([item]);
+    } else {
+      const isSelected = selectedAccounts.includes(item);
+      if (isSelected) {
+        setSelectedAccounts((prev) =>
+          prev.filter((account) => account !== item)
+        );
+      } else {
+        setSelectedAccounts((prev) => [...prev, item]);
+      }
+    }
+  };
+
+  const deleteSelectedAccounts = () => {
+    const updatedAccounts = bankAccounts.filter(
+      (item) => !selectedAccounts.includes(item)
+    );
+    setBankAccounts(updatedAccounts);
+    setSelectedAccounts([]);
+    setSelectionMode(false);
+  };
+
+  const openModifyModal = (account) => {
+    setModifyAccount(account);
+    setIsModifyModalVisible(true);
+  };
+
+  const handleCancelSelection = () => {
+    setSelectedAccounts([]);
+    setSelectionMode(false);
+  };
+
+const handleModifyAccount = (modifiedAccount) => {
+  // Find the index of the modified account in the bankAccounts array
+  const index = bankAccounts.findIndex(
+    (account) =>
+      account.routingNumber === modifiedAccount.routingNumber &&
+      account.accountNumber === modifiedAccount.accountNumber
+  );
+
+  if (index !== -1) {
+    // Create a new array with the modified account replacing the old one
+    const updatedBankAccounts = [...bankAccounts];
+    updatedBankAccounts[index] = modifiedAccount;
+
+    // Update the bankAccounts state with the updated array
+    setBankAccounts(updatedBankAccounts);
+  }
+};
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -89,19 +150,75 @@ const PaymentMethodsPage = ({ navigation }) => {
         />
       </TouchableOpacity>
 
+      {/* Buttons for modifying and deleting when in selection mode */}
+      {selectionMode && (
+        <View style={styles.selectionOptions}>
+          <TouchableOpacity
+            style={styles.optionButton}
+            onPress={() => openModifyModal(selectedAccounts[0])}
+          >
+            <Icon name="pencil" size={24} color={theme.colors.primary} />
+            <Text style={styles.optionText}>Modify</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.optionButton}
+            onPress={deleteSelectedAccounts}
+          >
+            <Icon name="delete" size={24} color={theme.colors.primary} />
+            <Text style={styles.optionText}>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.optionButton}
+            onPress={handleCancelSelection}
+          >
+            <Icon name="close" size={24} color={theme.colors.primary} />
+            <Text style={styles.optionText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {/* List of Bank Accounts */}
       <FlatList
         data={bankAccounts}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={styles.bankAccountItem}>
-            <Text style={theme.typography.body}>
-              Account Number: {formatNumberWithAsterisks(item.accountNumber)}
-            </Text>
-            <Text style={theme.typography.body}>
-              Routing Number: {formatNumberWithAsterisks(item.routingNumber)}
-            </Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              if (selectionMode) {
+                handleLongPress(item);
+              } else {
+                // Implement navigation to account details here
+              }
+            }}
+            onLongPress={() => handleLongPress(item)}
+            style={styles.bankAccountItem}
+          >
+            {selectionMode && (
+              <View style={styles.bankAccountSelection}>
+                <Icon
+                  name={
+                    selectedAccounts.includes(item)
+                      ? "checkbox-marked-circle"
+                      : "checkbox-blank-circle-outline"
+                  }
+                  size={24}
+                  color={theme.colors.primary}
+                />
+              </View>
+            )}
+            <View style={styles.accountInfo}>
+              <Text style={theme.typography.body}>Account Number:</Text>
+              <Text style={theme.typography.body}>
+                {formatNumberWithAsterisks(item.accountNumber)}
+              </Text>
+            </View>
+            <View style={styles.accountInfo}>
+              <Text style={theme.typography.body}>Routing Number:</Text>
+              <Text style={theme.typography.body}>
+                {formatNumberWithAsterisks(item.routingNumber)}
+              </Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
 
@@ -116,11 +233,17 @@ const PaymentMethodsPage = ({ navigation }) => {
           handleCloseModal();
         }}
       />
+
+      {/* Modify Bank Account Modal */}
+      <ModifyBankAccountModal
+        visible={isModifyModalVisible}
+        onClose={() => setIsModifyModalVisible(false)}
+        onModify={handleModifyAccount} // Pass the function here
+      />
     </View>
   );
 };
 
-// Styles for this component, leveraging a theme for consistent design
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -129,6 +252,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     paddingVertical: theme.spacing.large,
     backgroundColor: theme.colors.white,
     borderBottomWidth: 0.5,
@@ -166,6 +290,67 @@ const styles = StyleSheet.create({
     padding: theme.spacing.medium,
     borderBottomWidth: 0.5,
     borderBottomColor: theme.colors.grey.lighter,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  bankAccountSelection: {
+    marginRight: theme.spacing.medium,
+  },
+  selectionOptions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: theme.spacing.medium,
+    paddingHorizontal: theme.spacing.medium,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.grey.lighter,
+    backgroundColor: theme.colors.grey.light,
+  },
+  optionButton: {
+    alignItems: "center",
+  },
+  optionText: {
+    color: theme.colors.primary,
+    fontSize: 14,
+  },
+  accountInfo: {
+    flexDirection: "column",
+    flex: 1,
+  },
+  // Modal styles
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: theme.colors.white,
+    width: "80%",
+    padding: theme.spacing.large,
+    borderRadius: theme.spacing.small,
+  },
+  modalHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: theme.spacing.medium,
+  },
+  input: {
+    padding: theme.spacing.medium,
+    borderWidth: 0.5,
+    borderRadius: theme.spacing.small,
+    borderColor: theme.colors.grey.light,
+    marginBottom: theme.spacing.medium,
+  },
+  closeButton: {
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.medium,
+    alignItems: "center",
+    borderRadius: theme.spacing.small,
+  },
+  closeButtonLabel: {
+    color: theme.colors.white,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

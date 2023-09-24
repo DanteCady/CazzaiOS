@@ -60,7 +60,7 @@ const MessagesPage = () => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* FlatList to render list of messages */}
+      
       <FlatList
         data={messages}
         renderItem={({ item }) => (
