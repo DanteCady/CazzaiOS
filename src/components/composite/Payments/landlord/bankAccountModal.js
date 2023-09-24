@@ -15,7 +15,7 @@ const BankAccountModal = ({ visible, onClose, onManualAdd, onPlaidAdd }) => {
   const [confirmAccountNumber, setConfirmAccountNumber] = useState("");
 
   const handleManualAdd = () => {
-    // Perform validation here
+    // Validation logic here
     if (accountNumber === "" || routingNumber === "") {
       alert("Please enter both account and routing numbers.");
       return;
@@ -27,7 +27,7 @@ const BankAccountModal = ({ visible, onClose, onManualAdd, onPlaidAdd }) => {
     }
 
     // Call your function to add the bank account here
-    onManualAdd(accountNumber, routingNumber); // Pass the values here
+    onManualAdd(accountNumber, routingNumber);
   };
 
   return (

@@ -25,34 +25,44 @@ const PaymentMethodsPage = ({ navigation }) => {
   const [bankAccounts, setBankAccounts] = useState([]);
 
   const handleOpenModal = () => {
-    setIsAddingBankAccount(true);
+    if (bankAccounts.length >= 3) {
+      alert("You can only add up to 3 bank accounts.");
+    } else {
+      setIsAddingBankAccount(true);
+    }
   };
 
   const handleCloseModal = () => {
     setIsAddingBankAccount(false);
   };
 
-const addBankAccountManually = (accountNumber, routingNumber) => {
-  const formattedAccountNumber = formatNumberWithAsterisks(accountNumber);
-  const formattedRoutingNumber = formatNumberWithAsterisks(routingNumber);
+  const addBankAccountManually = (accountNumber, routingNumber) => {
+    if (bankAccounts.length >= 3) {
+      alert("You can only add up to 3 bank accounts.");
+      handleCloseModal();
+      return;
+    }
 
-  console.log("Account Number:", formattedAccountNumber);
-  console.log("Routing Number:", formattedRoutingNumber);
+    const formattedAccountNumber = formatNumberWithAsterisks(accountNumber);
+    const formattedRoutingNumber = formatNumberWithAsterisks(routingNumber);
 
-  const newBankAccount = {
-    accountNumber: formattedAccountNumber,
-    routingNumber: formattedRoutingNumber,
+    console.log("Account Number:", formattedAccountNumber);
+    console.log("Routing Number:", formattedRoutingNumber);
+
+    const newBankAccount = {
+      accountNumber: formattedAccountNumber,
+      routingNumber: formattedRoutingNumber,
+    };
+
+    setBankAccounts([...bankAccounts, newBankAccount]);
+
+    handleCloseModal();
   };
 
-  setBankAccounts([...bankAccounts, newBankAccount]);
+  const handleBack = () => {
+    navigation.navigate("LandlordSettingsPage");
+  };
 
-  handleCloseModal();
-};
-
-    const handleBack = () => {
-        navigation.navigate("LandlordSettingsPage");
-    };
-    
   return (
     <View style={styles.container}>
       {/* Header */}
