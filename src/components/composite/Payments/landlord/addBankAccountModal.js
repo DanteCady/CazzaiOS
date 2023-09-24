@@ -10,10 +10,12 @@ import {
 import theme from "../../../../theme";
 
 const BankAccountModal = ({ visible, onClose, onManualAdd, onPlaidAdd }) => {
+  // State variables for user input
   const [accountNumber, setAccountNumber] = useState("");
   const [routingNumber, setRoutingNumber] = useState("");
   const [confirmAccountNumber, setConfirmAccountNumber] = useState("");
 
+  // Function to handle manual bank account addition
   const handleManualAdd = () => {
     // Validation logic here
     if (accountNumber === "" || routingNumber === "") {
@@ -34,7 +36,10 @@ const BankAccountModal = ({ visible, onClose, onManualAdd, onPlaidAdd }) => {
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
+          {/* Modal Header */}
           <Text style={styles.modalHeader}>Add Bank Account</Text>
+
+          {/* Routing Number Input */}
           <TextInput
             style={styles.input}
             placeholder="Routing Number"
@@ -42,6 +47,8 @@ const BankAccountModal = ({ visible, onClose, onManualAdd, onPlaidAdd }) => {
             onChangeText={(text) => setRoutingNumber(text)}
             placeholderTextColor="grey"
           />
+
+          {/* Account Number Input */}
           <TextInput
             style={styles.input}
             placeholder="Account Number"
@@ -49,6 +56,8 @@ const BankAccountModal = ({ visible, onClose, onManualAdd, onPlaidAdd }) => {
             onChangeText={(text) => setAccountNumber(text)}
             placeholderTextColor="grey"
           />
+
+          {/* Confirm Account Number Input */}
           <TextInput
             style={styles.input}
             placeholder="Confirm Account Number"
@@ -56,12 +65,18 @@ const BankAccountModal = ({ visible, onClose, onManualAdd, onPlaidAdd }) => {
             onChangeText={(text) => setConfirmAccountNumber(text)}
             placeholderTextColor="grey"
           />
+
+          {/* Button to add bank account manually */}
           <TouchableOpacity style={styles.addButton} onPress={handleManualAdd}>
             <Text style={styles.addButtonLabel}>Add Manually</Text>
           </TouchableOpacity>
+
+          {/* Button to sign in with Plaid */}
           <TouchableOpacity style={styles.addButton} onPress={onPlaidAdd}>
             <Text style={styles.addButtonLabel}>Sign in with Plaid</Text>
           </TouchableOpacity>
+
+          {/* Button to close the modal */}
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonLabel}>Close</Text>
           </TouchableOpacity>

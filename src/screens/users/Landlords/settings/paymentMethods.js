@@ -7,7 +7,6 @@ import {
   FlatList,
   Modal,
   TextInput,
-  Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../../theme";
@@ -24,6 +23,7 @@ const formatNumberWithAsterisks = (number) => {
   return `************${visiblePart}`;
 };
 
+// PaymentMethodsPage Component
 const PaymentMethodsPage = ({ navigation }) => {
   const [isAddingBankAccount, setIsAddingBankAccount] = useState(false);
   const [bankAccounts, setBankAccounts] = useState([]);
@@ -40,7 +40,8 @@ const PaymentMethodsPage = ({ navigation }) => {
     }));
     setBankAccounts(updatedAccounts);
   };
-  
+
+  // Function to handle opening the bank account modal
   const handleOpenModal = () => {
     if (bankAccounts.length >= 3) {
       alert("You can only add up to 3 bank accounts.");
@@ -49,10 +50,12 @@ const PaymentMethodsPage = ({ navigation }) => {
     }
   };
 
+  // Function to handle closing the bank account modal
   const handleCloseModal = () => {
     setIsAddingBankAccount(false);
   };
 
+  // Function to add a bank account manually
   const addBankAccountManually = (accountNumber, routingNumber) => {
     if (bankAccounts.length >= 3) {
       alert("You can only add up to 3 bank accounts.");
@@ -76,10 +79,12 @@ const PaymentMethodsPage = ({ navigation }) => {
     handleCloseModal();
   };
 
+  // Function to navigate back to the Landlord Settings page
   const handleBack = () => {
     navigation.navigate("LandlordSettingsPage");
   };
 
+  // Function to handle long-press on a bank account item
   const handleLongPress = (item) => {
     if (!selectionMode) {
       setSelectionMode(true);
@@ -96,6 +101,7 @@ const PaymentMethodsPage = ({ navigation }) => {
     }
   };
 
+  // Function to delete selected bank accounts
   const deleteSelectedAccounts = () => {
     const updatedAccounts = bankAccounts.filter(
       (item) => !selectedAccounts.includes(item)
@@ -105,16 +111,19 @@ const PaymentMethodsPage = ({ navigation }) => {
     setSelectionMode(false);
   };
 
+  // Function to open the modify bank account modal
   const openModifyModal = (account) => {
     setModifyAccount(account);
     setIsModifyModalVisible(true);
   };
 
+  // Function to handle canceling the selection mode
   const handleCancelSelection = () => {
     setSelectedAccounts([]);
     setSelectionMode(false);
   };
 
+  // Function to handle modifying a bank account
   const handleModifyAccount = (modifiedAccount) => {
     // Find the index of the modified account in the bankAccounts array
     const index = bankAccounts.findIndex(
@@ -198,8 +207,14 @@ const PaymentMethodsPage = ({ navigation }) => {
             style={styles.optionButton}
             onPress={handleCancelSelection}
           >
-            <Icon name="close" size={24} color={theme.colors.primary.dark} />
-            <Text style={styles.optionText}>Cancel</Text>
+            <Icon
+              name={selectionMode ? "close" : "cancel"} // Change icon based on the condition
+              size={24}
+              color={theme.colors.primary.dark}
+            />
+            <Text style={styles.optionText}>
+              {selectionMode ? "Close" : "Cancel"}{" "}
+            </Text>
           </TouchableOpacity>
         </View>
       )}

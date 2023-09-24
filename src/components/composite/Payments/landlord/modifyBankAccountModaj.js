@@ -11,11 +11,13 @@ import {
 import theme from "../../../../theme";
 
 const ModifyBankAccountModal = ({ visible, onClose, onModify }) => {
+  // State variable to store modified bank account information
   const [modifyAccount, setModifyAccount] = useState({
     routingNumber: "",
     accountNumber: "",
   });
 
+  // Function to handle the modification of bank account
   const handleModify = () => {
     Alert.alert(
       "Confirm Update",
@@ -28,8 +30,9 @@ const ModifyBankAccountModal = ({ visible, onClose, onModify }) => {
         {
           text: "OK",
           onPress: () => {
+            // Call the onModify function with the modified account data
             onModify(modifyAccount);
-            onClose();
+            onClose(); // Close the modal
           },
         },
       ]
@@ -40,9 +43,10 @@ const ModifyBankAccountModal = ({ visible, onClose, onModify }) => {
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalHeader}>
-            Modify Bank Account
-          </Text>
+          {/* Modal Header */}
+          <Text style={styles.modalHeader}>Modify Bank Account</Text>
+
+          {/* Routing Number Input */}
           <TextInput
             style={styles.input}
             placeholder="Routing Number"
@@ -52,6 +56,8 @@ const ModifyBankAccountModal = ({ visible, onClose, onModify }) => {
             }
             placeholderTextColor="grey"
           />
+
+          {/* Account Number Input */}
           <TextInput
             style={styles.input}
             placeholder="Account Number"
@@ -61,16 +67,14 @@ const ModifyBankAccountModal = ({ visible, onClose, onModify }) => {
             }
             placeholderTextColor="grey"
           />
-          <TouchableOpacity
-            style={styles.addButton}
-            onPress={handleModify}
-          >
+
+          {/* Button to submit the modification */}
+          <TouchableOpacity style={styles.addButton} onPress={handleModify}>
             <Text style={styles.addButtonLabel}>Submit</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={onClose}
-          >
+
+          {/* Button to close the modal */}
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonLabel}>Close</Text>
           </TouchableOpacity>
         </View>
