@@ -22,7 +22,7 @@ const RootNavigator = () => {
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
-      <Stack.Navigator initialRouteName="ManagePaymentMethods" options={{ presentation: 'modal' }}>
+      <Stack.Navigator initialRouteName="LandlordDashboard" options={{ presentation: 'modal' }}>
         <Stack.Screen name="Signup" component={SignUpScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="LandlordSettingsPage" component={LandlordSettingsPage} options={{ headerShown: false }} />

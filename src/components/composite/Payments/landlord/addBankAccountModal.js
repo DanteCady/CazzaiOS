@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   closeButtonLabel: {
-    color: theme.colors.white,
+    color: "red",
     fontWeight: "bold",
   },
 });

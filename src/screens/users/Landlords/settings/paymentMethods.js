@@ -32,6 +32,15 @@ const PaymentMethodsPage = ({ navigation }) => {
   const [isModifyModalVisible, setIsModifyModalVisible] = useState(false);
   const [modifyAccount, setModifyAccount] = useState(null);
 
+  // Function to set a bank account as primary
+  const setAsPrimary = (account) => {
+    const updatedAccounts = bankAccounts.map((item) => ({
+      ...item,
+      primary: item === account, // Set the primary flag to true for the selected account
+    }));
+    setBankAccounts(updatedAccounts);
+  };
+  
   const handleOpenModal = () => {
     if (bankAccounts.length >= 3) {
       alert("You can only add up to 3 bank accounts.");
@@ -106,23 +115,23 @@ const PaymentMethodsPage = ({ navigation }) => {
     setSelectionMode(false);
   };
 
-const handleModifyAccount = (modifiedAccount) => {
-  // Find the index of the modified account in the bankAccounts array
-  const index = bankAccounts.findIndex(
-    (account) =>
-      account.routingNumber === modifiedAccount.routingNumber &&
-      account.accountNumber === modifiedAccount.accountNumber
-  );
+  const handleModifyAccount = (modifiedAccount) => {
+    // Find the index of the modified account in the bankAccounts array
+    const index = bankAccounts.findIndex(
+      (account) =>
+        account.routingNumber === modifiedAccount.routingNumber &&
+        account.accountNumber === modifiedAccount.accountNumber
+    );
 
-  if (index !== -1) {
-    // Create a new array with the modified account replacing the old one
-    const updatedBankAccounts = [...bankAccounts];
-    updatedBankAccounts[index] = modifiedAccount;
+    if (index !== -1) {
+      // Create a new array with the modified account replacing the old one
+      const updatedBankAccounts = [...bankAccounts];
+      updatedBankAccounts[index] = modifiedAccount;
 
-    // Update the bankAccounts state with the updated array
-    setBankAccounts(updatedBankAccounts);
-  }
-};
+      // Update the bankAccounts state with the updated array
+      setBankAccounts(updatedBankAccounts);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -150,33 +159,50 @@ const handleModifyAccount = (modifiedAccount) => {
         />
       </TouchableOpacity>
 
-      {/* Buttons for modifying and deleting when in selection mode */}
       {selectionMode && (
         <View style={styles.selectionOptions}>
           <TouchableOpacity
             style={styles.optionButton}
             onPress={() => openModifyModal(selectedAccounts[0])}
           >
-            <Icon name="pencil" size={24} color={theme.colors.primary} />
+            <Icon name="pencil" size={24} color={theme.colors.primary.main} />
             <Text style={styles.optionText}>Modify</Text>
           </TouchableOpacity>
+          {selectedAccounts[0] && ( // Check if selectedAccounts[0] is defined
+            <TouchableOpacity
+              style={styles.optionButton}
+              onPress={() => setAsPrimary(selectedAccounts[0])}
+            >
+              <Icon
+                name="check-circle"
+                size={24}
+                color={
+                  selectedAccounts[0].primary
+                    ? theme.colors.primary.light // If already primary, use primary color
+                    : theme.colors.primary.light // Otherwise, use blue color
+                }
+              />
+              <Text style={styles.optionText}>
+                {selectedAccounts[0].primary ? "Primary" : "Set as Primary"}
+              </Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={styles.optionButton}
             onPress={deleteSelectedAccounts}
           >
-            <Icon name="delete" size={24} color={theme.colors.primary} />
+            <Icon name="delete" size={24} color="red" />
             <Text style={styles.optionText}>Delete</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.optionButton}
             onPress={handleCancelSelection}
           >
-            <Icon name="close" size={24} color={theme.colors.primary} />
+            <Icon name="close" size={24} color={theme.colors.primary.dark} />
             <Text style={styles.optionText}>Cancel</Text>
           </TouchableOpacity>
         </View>
       )}
-
       {/* List of Bank Accounts */}
       <FlatList
         data={bankAccounts}
@@ -218,6 +244,13 @@ const handleModifyAccount = (modifiedAccount) => {
                 {formatNumberWithAsterisks(item.routingNumber)}
               </Text>
             </View>
+            {item.primary && ( // Render the blue checkmark if the account is primary
+              <Icon
+                name="check-circle"
+                size={24}
+                color={theme.colors.primary.main} // You can adjust the color as needed
+              />
+            )}
           </TouchableOpacity>
         )}
       />

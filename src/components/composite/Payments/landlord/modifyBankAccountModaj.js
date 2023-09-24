@@ -120,14 +120,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   closeButton: {
-    backgroundColor: theme.colors.red,
     padding: theme.spacing.medium,
     borderRadius: theme.spacing.small,
     width: "100%",
     alignItems: "center",
   },
   closeButtonLabel: {
-    color: theme.colors.white,
+    color: "red",
     fontWeight: "bold",
   },
 });
