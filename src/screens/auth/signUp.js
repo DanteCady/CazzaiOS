@@ -34,7 +34,7 @@ const SignUpScreen = ({ navigation }) => {
    try {
      // API call
      const response = await axios.post(
-       "http://192.168.17.1:3000/api/users/signup",
+       "http://192.168.247.1:3000/api/users/signup",
        {
          firstName,
          lastName,

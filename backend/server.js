@@ -69,7 +69,7 @@ const verifyToken = (req, res, next) => {
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", verifyToken, getUserNameRoutes);
+app.use("/api/users/", verifyToken, getUserNameRoutes);
 app.use("/api/users", userRoutes);
 
 app.listen(PORT, () => {

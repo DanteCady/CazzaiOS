@@ -9,10 +9,10 @@ import QuickAddButtons from "../../../components/composite/Dashboard/landlord/qu
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../theme";
 import axios from "axios";
-
-const LandlordDashboard = ({ navigation }) => {
-  const [showQuickAddButtons, setShowQuickAddButtons] = useState(false); // State variable to control Quick Add buttons visibility
-  const [userName, setUserName] = useState(""); // State to store the user's name
+import * as SecureStore from 'expo-secure-store'; 
+const LandlordDashboard = ({ route, navigation }) => {
+  const [showQuickAddButtons, setShowQuickAddButtons] = useState(false);
+  const { userName } = route.params || {}; // Destructure with a fallback object to avoid undefined issues
 
   const toggleQuickAddButtons = () => {
     setShowQuickAddButtons(!showQuickAddButtons);
@@ -22,26 +22,10 @@ const LandlordDashboard = ({ navigation }) => {
     navigation.navigate("LandlordSettingsPage");
   };
 
-  // Function to fetch the user's name from the backend
-    const fetchUserName = async () => {
-      try {
-        const response = await axios.get(
-          "http://192.168.247.1:3000/api/users/getUserName"
-        );
-        setUserName(response.data.userName);
-      } catch (error) {
-        console.error("Error fetching user name:", error);
-      }
-  };
-  
-  useEffect(() => {
-    console.log("Fetching user name...");
-    fetchUserName();
-  }, []);
-
   const handleLogout = () => {
     navigation.navigate("Login");
   };
+
   const tenants = [
     { name: "John Doe", rent: 500 },
     { name: "Jane Smith", rent: 550 },
@@ -80,7 +64,9 @@ const LandlordDashboard = ({ navigation }) => {
         colors={["#43ecf5", "#f7f7f7"]}
         style={styles.gradientContainer}
       >
-        <Text style={styles.welcomeText}>Welcome Back, {userName ? userName : "User"}!</Text>
+        <Text style={styles.welcomeText}>
+          Welcome Back, {userName || "User"}!
+        </Text>
         <TouchableOpacity style={styles.settingsIconContainer}>
           <Icon
             name="cog"

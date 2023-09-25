@@ -6,21 +6,43 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Alert,
 } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import theme from "../../theme";
 import axios from "axios";
-import { Alert } from "react-native";
+import * as SecureStore from "expo-secure-store";
+
 const LoginScreen = ({ navigation }) => {
-  // Initialize states for email, password, and password visibility
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Logic for user login
+ const fetchUserName = async (token) => {
+   try {
+     const response = await axios.get(
+       "http://192.168.1.42:3000/api/users/getUserName",
+       {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+       }
+     );
+
+     if (response.data && response.data.userName) {
+       return response.data.userName;
+     } else {
+       console.error("Unexpected response structure:", response.data);
+       return null;
+     }
+   } catch (error) {
+     console.error("Error fetching user name:", error);
+     return null;
+   }
+ };
+
   const handleLogin = async () => {
     try {
-      // Send a POST request to the login endpoint
       const response = await axios.post(
         "http://192.168.1.42:3000/api/auth/login",
         {
@@ -30,41 +52,45 @@ const LoginScreen = ({ navigation }) => {
       );
 
       if (response.data.token) {
-        // Store the JWT token securely (e.g., using AsyncStorage or Redux)
         const token = response.data.token;
-        const userType = response.data.userType; // Retrieve userType from the response
+
+        // Fetch the user's name after successfully logging in
+        const userName = await fetchUserName(token);
+
+        const userType = response.data.userType;
+
+        // Store the JWT token securely
+        await SecureStore.setItemAsync("userToken", token);
+
+        if (!userName) {
+          Alert.alert("Error", "Failed to fetch the user's name.");
+          return;
+        }
 
         if (userType === "landlord") {
-          // Navigate to the landlord dashboard
-          navigation.navigate("LandlordDashboard", { token });
+          navigation.navigate("LandlordDashboard", { token, userName });
         } else if (userType === "tenant") {
-          // Navigate to the tenant dashboard
-          navigation.navigate("TenantDashboard", { token });
+          navigation.navigate("TenantDashboard", { token, userName });
         } else {
-          // Handle other user types or scenarios
           Alert.alert("Login Failed", "Invalid user type.");
         }
       } else {
-        // Handle login failure
         Alert.alert("Login Failed", "Invalid credentials. Please try again.");
       }
     } catch (error) {
       if (error.response) {
-        // The request was made, but the server responded with an error status code
         console.error("Server error:", error.response.data);
         Alert.alert(
           "Server Error",
           "An error occurred on the server. Please try again later."
         );
       } else if (error.request) {
-        // The request was made, but there was no response from the server
         console.error("Network error:", error.request);
         Alert.alert(
           "Network Error",
           "Unable to connect to the server. Please check your network connection."
         );
       } else {
-        // Something else went wrong
         console.error("Unexpected error:", error);
         Alert.alert(
           "Login Error",
@@ -74,12 +100,10 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  // Navigate to the Signup screen
   const goToSignup = () => {
     navigation.navigate("Signup");
   };
 
-  // Logic for biometric authentication; to be implemented
   const handleBiometric = () => {
     // Handle biometric authentication here
   };
@@ -87,14 +111,11 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.loginContainer}>
-        {/* App logo */}
         <Image
           source={require("../../assets/apple-touch-icon.png")}
           style={styles.logo}
         />
         <Text style={styles.title}>Welcome to Cazza!</Text>
-
-        {/* Email input */}
         <TextInput
           label="Email"
           value={email}
@@ -104,8 +125,6 @@ const LoginScreen = ({ navigation }) => {
           keyboardType="email-address"
           autoCapitalize="none"
         />
-
-        {/* Password input */}
         <TextInput
           label="Password"
           value={password}
@@ -114,15 +133,11 @@ const LoginScreen = ({ navigation }) => {
           style={styles.input}
           secureTextEntry={!showPassword}
         />
-
-        {/* Section for 'Forgot Password' link */}
         <View style={styles.forgotPasswordContainer}>
           <TouchableOpacity>
             <Text style={styles.forgotPasswordLink}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Login button and biometric (FaceID) authentication */}
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
@@ -132,8 +147,6 @@ const LoginScreen = ({ navigation }) => {
           >
             Login
           </Button>
-
-          {/* Biometric authentication */}
           <TouchableOpacity>
             <Image
               source={require("../../assets/Face_ID_logo.svg.png")}
@@ -142,8 +155,6 @@ const LoginScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-
-        {/* Footer: Contains Sign Up link, version, and other terms */}
         <View style={styles.footerContainer}>
           <TouchableOpacity style={styles.signUpContainer} onPress={goToSignup}>
             <Text style={styles.signUpText}>Don't have an account? </Text>
