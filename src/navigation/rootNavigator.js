@@ -14,8 +14,18 @@ import {StatusBar} from 'react-native';
 import TenantDashboard from '../screens/users/Tenants/tenantDashboard';
 import ChangePassword from '../screens/users/Landlords/settings/Profile/changePassword';
 import EditProfile from '../screens/users/Landlords/settings/Profile/editProfile';
-import PaymentMethods from '../screens/users/Landlords/settings/paymentMethods';
-
+import PaymentMethods from '../screens/users/Landlords/settings/Profile/paymentMethods';
+import PushNotificationsSettingsPage from '../screens/users/Landlords/settings/Notifications/pushNotifications';
+import SMSAlertsSettingsPage from '../screens/users/Landlords/settings/Notifications/smsAlerts';
+import EmailNotificationsSettingsPage from '../screens/users/Landlords/settings/Notifications/emailNotifications';
+import ThemeSettings from '../screens/users/Landlords/settings/Display_Appearance/themeSettings';
+import LanguageSettings from  '../screens/users/Landlords/settings/Display_Appearance/languageSettings';
+import CameraSettings from '../screens/users/Landlords/settings/Privacy_Security/camera';
+import LocationSettings from "../screens/users/Landlords/settings/Privacy_Security/location";
+import PhotosSettings from '../screens/users/Landlords/settings/Privacy_Security/photos';
+import MicrophoneSettings from "../screens/users/Landlords/settings/Privacy_Security/microphone";
+import DeleteAccountPage from '../screens/users/Landlords/settings/Privacy_Security/deleteAccount';
+import DownloadDataPage from '../screens/users/Landlords/settings/Privacy_Security/downloadData';
 const Stack = createStackNavigator();
 
 const RootNavigator = () => {
@@ -35,6 +45,17 @@ const RootNavigator = () => {
         <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
         <Stack.Screen name="ManagePaymentMethods" component={PaymentMethods} options={{ headerShown: false }} />
+        <Stack.Screen name="PushNotificationsSettingsPage" component={PushNotificationsSettingsPage} options={{ headerShown: false }} />
+        <Stack.Screen name="SMSAlertsSettingsPage" component={SMSAlertsSettingsPage} options={{ headerShown: false }} />
+        <Stack.Screen name="EmailNotificationsSettingsPage" component={EmailNotificationsSettingsPage} options={{ headerShown: false }} />
+        <Stack.Screen name="ThemeSettings" component={ThemeSettings} options={{ headerShown: false }} />
+        <Stack.Screen name="LanguageSettings" component={LanguageSettings} options={{ headerShown: false }} />
+        <Stack.Screen name="CameraSettings" component={CameraSettings} options={{ headerShown: false }} />
+        <Stack.Screen name="LocationSettings" component={LocationSettings} options={{ headerShown: false }} />
+        <Stack.Screen name="PhotosSettings" component={PhotosSettings} options={{ headerShown: false }} />
+        <Stack.Screen name="MicrophoneSettings" component={MicrophoneSettings} options={{ headerShown: false }} />
+        <Stack.Screen name="DeleteAccountPage" component={DeleteAccountPage} options={{ headerShown: false }} />
+        <Stack.Screen name="DownloadDataPage" component={DownloadDataPage} options={{ headerShown: false }} />
         {/* Add other screen routes here */}
       </Stack.Navigator>
       

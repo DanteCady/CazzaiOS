@@ -24,18 +24,17 @@ const settingsData = [
     title: "Notifications",
     icon: "bell",
     subItems: [
-      { title: "Push Notifications" },
-      { title: "Email Notifications" },
-      { title: "SMS Alerts" },
+      { title: "Push Notifications", route: "PushNotificationsSettingsPage" },
+      { title: "Email Notifications", route: "EmailNotificationsSettingsPage" },
+      { title: "SMS Alerts", route: "SMSAlertsSettingsPage" },
     ],
   },
   {
     title: "Display & Appearance",
-    icon: "monitor",
+    icon: "screen-rotation",
     subItems: [
-      { title: "Theme Settings" },
-      { title: "Font Size" },
-      { title: "Language & Region" },
+      { title: "Theme Settings", route: "ThemeSettings" },
+      { title: "Language", route: "LanguageSettings" },
     ],
   },
   {
@@ -43,14 +42,12 @@ const settingsData = [
     icon: "lock",
     subItems: [
       { title: "Privacy Policy" },
-      { title: "Two-Factor Authentication" },
-      { title: "Delete Account" },
-      { title: "Download Data" },
-      { title: "Camera" },
-      { title: "Location" },
-      { title: "Photos" },
-      { title: "Contacts" },
-      { title: "Microphone" },
+      { title: "Delete Account", route: "DeleteAccountPage" },
+      { title: "Download Data", route: "DownloadDataPage" },
+      { title: "Camera", route: "CameraSettings" },
+      { title: "Location", route: "LocationSettings" },
+      { title: "Photos", route: "PhotosSettings" },
+      { title: "Microphone", route: "MicrophoneSettings" },
     ],
   },
   {
@@ -88,7 +85,7 @@ const LandlordSettingsPage = () => {
 
   const handleBack = () => {
     // Handle navigating back to the previous screen
-    navigation.goBack();
+    navigation.navigate("LandlordDashboard"); // Navigate to the specified route
   };
 
   return (

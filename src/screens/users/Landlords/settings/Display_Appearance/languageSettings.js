@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Appbar, RadioButton } from "react-native-paper";
 
-const SMSAlertsSettingsPage = ({ navigation }) => {
-  const [isEnabled, setIsEnabled] = useState(true); // Change this initial state based on the user's preference
+const LanguageSettings = ({ navigation }) => {
+  const [selectedLanguage, setSelectedLanguage] = useState("system"); // Default to system language
+  const systemLanguage = "system";
 
-    const handleBack = () => {
-  navigation.navigate("LandlordSettingsPage");
-    };
-    
-  const handleToggle = () => {
-    setIsEnabled((prev) => !prev);
-    // You can add logic here to save the user's preference (enabled/disabled) to your backend or local storage.
+  const handleBack = () => {
+    navigation.navigate("LandlordSettingsPage");
+  };
+
+  const handleLanguageChange = (language) => {
+    setSelectedLanguage(language);
+    // You can add logic here to save the user's language preference to your backend or local storage.
   };
 
   return (
@@ -19,31 +20,32 @@ const SMSAlertsSettingsPage = ({ navigation }) => {
       {/* Header */}
       <Appbar.Header style={styles.header}>
         <Appbar.BackAction onPress={handleBack} />
-        <Appbar.Content title="SMS Alerts" />
+        <Appbar.Content title="Language Settings" />
       </Appbar.Header>
 
-      {/*SMS Alerts Toggle */}
+      {/* Language Selection */}
       <View style={styles.toggleContainer}>
         <RadioButton.Group
-          onValueChange={() => handleToggle()}
-          value={isEnabled ? "enabled" : "disabled"}
+          onValueChange={(value) => handleLanguageChange(value)}
+          value={selectedLanguage}
         >
           <View style={styles.toggleItem}>
             <RadioButton.Item
-              label="Enable SMS Alerts"
-              value="enabled"
+              label="Use System Language"
+              value={systemLanguage}
               color="#007AFF" // Change the color as needed
               uncheckedColor="#007AFF" // Change the color as needed
             />
           </View>
           <View style={styles.toggleItem}>
             <RadioButton.Item
-              label="Disable SMS Alerts"
-              value="disabled"
+              label="English (en)"
+              value="en"
               color="#007AFF" // Change the color as needed
               uncheckedColor="#007AFF" // Change the color as needed
             />
           </View>
+          {/* Add more language options here */}
         </RadioButton.Group>
       </View>
     </View>
@@ -67,4 +69,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SMSAlertsSettingsPage;
+export default LanguageSettings;

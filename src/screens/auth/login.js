@@ -22,7 +22,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       // Send a POST request to the login endpoint
       const response = await axios.post(
-        "http://192.168.17.1:3000/api/auth/login",
+        "http://192.168.1.42:3000/api/auth/login",
         {
           email,
           password,

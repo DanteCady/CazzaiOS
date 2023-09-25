@@ -36,13 +36,14 @@ exports.login = (req, res) => {
       }
 
       // Include the user's type in the response
-     const token = jwt.sign(
-       { userId: user.id, userType: user.user_type },
-       process.env.JWT_SECRET_KEY,
-       {
-         expiresIn: "1h",
-       }
-     );
+      const token = jwt.sign(
+        { userId: user.user_id, userType: user.user_type },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: "1h",
+        }
+      );
+
 
       res.status(200).json({ token, userType: user.user_type });
     });

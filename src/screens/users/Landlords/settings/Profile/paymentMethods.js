@@ -9,9 +9,9 @@ import {
   TextInput,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import theme from "../../../../theme";
-import BankAccountModal from "../../../../components/composite/Payments/landlord/addBankAccountModal";
-import ModifyBankAccountModal from "../../../../components/composite/Payments/landlord/modifyBankAccountModaj";
+import theme from "../../../../../theme";
+import BankAccountModal from "../../../../../components/composite/Payments/landlord/addBankAccountModal";
+import ModifyBankAccountModal from "../../../../../components/composite/Payments/landlord/modifyBankAccountModaj";
 
 // Function to format a number with asterisks, leaving the last 4 digits visible
 const formatNumberWithAsterisks = (number) => {

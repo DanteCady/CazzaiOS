@@ -1,17 +1,40 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import { Appbar, RadioButton } from "react-native-paper";
 
-const ThemeSettingsPage = ({ navigation }) => {
-  const [theme, setTheme] = useState("system"); // Change this initial state based on the user's preference
+const LocationSettings = ({ navigation }) => {
+  const [locationAccess, setlocationAccess] = useState("disabled");
 
   const handleBack = () => {
     navigation.navigate("LandlordSettingsPage");
   };
 
-  const handleThemeChange = (selectedTheme) => {
-    setTheme(selectedTheme);
-    // You can add logic here to save the user's theme preference to your backend or local storage.
+  const handlelocationAccessChange = (selectedAccess) => {
+    if (selectedAccess === "enabled") {
+      Alert.alert(
+        "Allow location Access",
+        "Cazza would like to access your location.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+            onPress: () => {
+              setlocationAccess("disabled");
+            },
+          },
+          {
+            text: "Allow",
+            onPress: () => {
+              setlocationAccess("enabled");
+              // You can add logic here to save the user's preference to your backend or local storage.
+            },
+          },
+        ]
+      );
+    } else {
+      setlocationAccess("disabled");
+      // You can add logic here to save the user's preference to your backend or local storage.
+    }
   };
 
   return (
@@ -19,35 +42,27 @@ const ThemeSettingsPage = ({ navigation }) => {
       {/* Header */}
       <Appbar.Header style={styles.header}>
         <Appbar.BackAction onPress={handleBack} />
-        <Appbar.Content title="Theme Settings" />
+        <Appbar.Content title="location" />
       </Appbar.Header>
 
-      {/* Theme Selection */}
+      {/* location Access Selection */}
       <View style={styles.toggleContainer}>
         <RadioButton.Group
-          onValueChange={(value) => handleThemeChange(value)}
-          value={theme}
+          onValueChange={(value) => handlelocationAccessChange(value)}
+          value={locationAccess}
         >
           <View style={styles.toggleItem}>
             <RadioButton.Item
-              label="Use System Theme"
-              value="system"
+              label="Enable location Access"
+              value="enabled"
               color="#007AFF" // Change the color as needed
               uncheckedColor="#007AFF" // Change the color as needed
             />
           </View>
           <View style={styles.toggleItem}>
             <RadioButton.Item
-              label="Light Mode"
-              value="light"
-              color="#007AFF" // Change the color as needed
-              uncheckedColor="#007AFF" // Change the color as needed
-            />
-          </View>
-          <View style={styles.toggleItem}>
-            <RadioButton.Item
-              label="Dark Mode"
-              value="dark"
+              label="Disable location Access"
+              value="disabled"
               color="#007AFF" // Change the color as needed
               uncheckedColor="#007AFF" // Change the color as needed
             />
@@ -75,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ThemeSettingsPage;
+export default LocationSettings;

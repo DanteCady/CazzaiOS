@@ -1,17 +1,40 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import { Appbar, RadioButton } from "react-native-paper";
 
-const ThemeSettingsPage = ({ navigation }) => {
-  const [theme, setTheme] = useState("system"); // Change this initial state based on the user's preference
+const CameraSettings = ({ navigation }) => {
+  const [cameraAccess, setCameraAccess] = useState("disabled");
 
   const handleBack = () => {
     navigation.navigate("LandlordSettingsPage");
   };
 
-  const handleThemeChange = (selectedTheme) => {
-    setTheme(selectedTheme);
-    // You can add logic here to save the user's theme preference to your backend or local storage.
+  const handleCameraAccessChange = (selectedAccess) => {
+    if (selectedAccess === "enabled") {
+      Alert.alert(
+        "Allow Camera Access",
+        "Cazza would like to access your camera for taking photos and videos.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+            onPress: () => {
+              setCameraAccess("disabled");
+            },
+          },
+          {
+            text: "Allow",
+            onPress: () => {
+              setCameraAccess("enabled");
+              // You can add logic here to save the user's preference to your backend or local storage.
+            },
+          },
+        ]
+      );
+    } else {
+      setCameraAccess("disabled");
+      // You can add logic here to save the user's preference to your backend or local storage.
+    }
   };
 
   return (
@@ -19,35 +42,27 @@ const ThemeSettingsPage = ({ navigation }) => {
       {/* Header */}
       <Appbar.Header style={styles.header}>
         <Appbar.BackAction onPress={handleBack} />
-        <Appbar.Content title="Theme Settings" />
+        <Appbar.Content title="Camera" />
       </Appbar.Header>
 
-      {/* Theme Selection */}
+      {/* Camera Access Selection */}
       <View style={styles.toggleContainer}>
         <RadioButton.Group
-          onValueChange={(value) => handleThemeChange(value)}
-          value={theme}
+          onValueChange={(value) => handleCameraAccessChange(value)}
+          value={cameraAccess}
         >
           <View style={styles.toggleItem}>
             <RadioButton.Item
-              label="Use System Theme"
-              value="system"
+              label="Enable Camera Access"
+              value="enabled"
               color="#007AFF" // Change the color as needed
               uncheckedColor="#007AFF" // Change the color as needed
             />
           </View>
           <View style={styles.toggleItem}>
             <RadioButton.Item
-              label="Light Mode"
-              value="light"
-              color="#007AFF" // Change the color as needed
-              uncheckedColor="#007AFF" // Change the color as needed
-            />
-          </View>
-          <View style={styles.toggleItem}>
-            <RadioButton.Item
-              label="Dark Mode"
-              value="dark"
+              label="Disable Camera Access"
+              value="disabled"
               color="#007AFF" // Change the color as needed
               uncheckedColor="#007AFF" // Change the color as needed
             />
@@ -75,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ThemeSettingsPage;
+export default CameraSettings;

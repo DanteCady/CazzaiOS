@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, View, TouchableOpacity } from "react-native";
 import { Card, Title, Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
@@ -8,9 +8,11 @@ import Swiper from "react-native-swiper";
 import QuickAddButtons from "../../../components/composite/Dashboard/landlord/quickAddButtons";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import theme from "../../../theme";
+import axios from "axios";
 
 const LandlordDashboard = ({ navigation }) => {
   const [showQuickAddButtons, setShowQuickAddButtons] = useState(false); // State variable to control Quick Add buttons visibility
+  const [userName, setUserName] = useState(""); // State to store the user's name
 
   const toggleQuickAddButtons = () => {
     setShowQuickAddButtons(!showQuickAddButtons);
@@ -19,6 +21,23 @@ const LandlordDashboard = ({ navigation }) => {
   const goToSettings = () => {
     navigation.navigate("LandlordSettingsPage");
   };
+
+  // Function to fetch the user's name from the backend
+    const fetchUserName = async () => {
+      try {
+        const response = await axios.get(
+          "http://192.168.247.1:3000/api/users/getUserName"
+        );
+        setUserName(response.data.userName);
+      } catch (error) {
+        console.error("Error fetching user name:", error);
+      }
+  };
+  
+  useEffect(() => {
+    console.log("Fetching user name...");
+    fetchUserName();
+  }, []);
 
   const handleLogout = () => {
     navigation.navigate("Login");
@@ -49,7 +68,6 @@ const LandlordDashboard = ({ navigation }) => {
     return differenceInDays;
   };
 
-  const userName = "Cazza User"; // replace with dynamic data, maybe from a state or prop
 
   const totalRentExpected = tenants.reduce(
     (sum, tenant) => sum + tenant.rent,
@@ -62,7 +80,7 @@ const LandlordDashboard = ({ navigation }) => {
         colors={["#43ecf5", "#f7f7f7"]}
         style={styles.gradientContainer}
       >
-        <Text style={styles.welcomeText}>Welcome Back, {userName}!</Text>
+        <Text style={styles.welcomeText}>Welcome Back, {userName ? userName : "User"}!</Text>
         <TouchableOpacity style={styles.settingsIconContainer}>
           <Icon
             name="cog"
